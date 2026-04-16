@@ -1,0 +1,35 @@
+[19-Mar-2026 08:58:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function bp_input() in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php:7
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once()
+#1 {main}
+  thrown in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php on line 7
+[19-Mar-2026 08:58:25 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function bp_input() in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php:7
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once()
+#1 {main}
+  thrown in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php on line 7
+[19-Mar-2026 08:58:28 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function bp_input() in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php:7
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once()
+#1 {main}
+  thrown in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php on line 7
+[19-Mar-2026 08:58:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function bp_input() in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php:7
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once()
+#1 {main}
+  thrown in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php on line 7
+[19-Mar-2026 08:58:37 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function bp_input() in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php:7
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once()
+#1 {main}
+  thrown in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php on line 7
+[19-Mar-2026 09:01:09 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function bp_input() in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php:7
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once()
+#1 {main}
+  thrown in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php on line 7
+[19-Mar-2026 09:01:12 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function bp_input() in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php:7
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once()
+#1 {main}
+  thrown in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php on line 7
