@@ -157,7 +157,11 @@ if ($totalDays <= 0) {
     ], 400);
 }
 
-$balances = bp_fetch_leave_balances((string)($staff['staff_name'] ?? ''));
+$balances = bp_fetch_leave_balances(
+    (string)($staff['staff_name'] ?? ''),
+    (string)($staff['unique_id'] ?? ''),
+    $employeeId
+);
 $available = $leaveTypeId === 'lwp' ? null : bp_balance_for_leave_type($balances, $leaveTypeId);
 
 if ($leaveTypeId !== 'lwp' && $totalDays > (float)$available) {

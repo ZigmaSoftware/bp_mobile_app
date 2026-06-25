@@ -2952,3 +2952,275 @@ Stack trace:
 #3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(410): bp_fetch_shift_weekoff_map(Array, '2025-04-10', '2028-04-09')
 #4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_dashboard.php(57): bp_fetch_weekoff_dates_for_staff(Array, '2025-04-10', '2028-04-09')
 #5 {main}
+[01-Jun-2026 14:08:14 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('ADM001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('ADM001', 'Leave request p...', 'New leave reque...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2290): bp_deliver_leave_notification_result('ADM001', 'TEST001', '6a1d44f65501816...', 'Leave request p...', 'New leave reque...', '/leave-approval...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_apply.php(281): bp_deliver_leave_notifications_result(Array, 'TEST001', '6a1d44f65501816...', 'Leave request p...', 'New leave reque...', '/leave-approval...', Array)
+#7 {main}
+[01-Jun-2026 14:08:14 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM085', 'Leave request p...', 'New leave reque...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2290): bp_deliver_leave_notification_result('XWM085', 'TEST001', '6a1d44f65501816...', 'Leave request p...', 'New leave reque...', '/leave-approval...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_apply.php(281): bp_deliver_leave_notifications_result(Array, 'TEST001', '6a1d44f65501816...', 'Leave request p...', 'New leave reque...', '/leave-approval...', Array)
+#7 {main}
+[01-Jun-2026 14:08:18 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=suswinalt@gmail.com,megha.wabhitkar@blue-planet.com,neha.bhatnagar@blue-planet.com
+[01-Jun-2026 17:09:32 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('ADM001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('ADM001', 'Leave request p...', 'New leave reque...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2290): bp_deliver_leave_notification_result('ADM001', 'TEST001', '6a1d6f7452faa45...', 'Leave request p...', 'New leave reque...', '/leave-approval...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_apply.php(281): bp_deliver_leave_notifications_result(Array, 'TEST001', '6a1d6f7452faa45...', 'Leave request p...', 'New leave reque...', '/leave-approval...', Array)
+#7 {main}
+[01-Jun-2026 17:09:32 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM085', 'Leave request p...', 'New leave reque...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2290): bp_deliver_leave_notification_result('XWM085', 'TEST001', '6a1d6f7452faa45...', 'Leave request p...', 'New leave reque...', '/leave-approval...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_apply.php(281): bp_deliver_leave_notifications_result(Array, 'TEST001', '6a1d6f7452faa45...', 'Leave request p...', 'New leave reque...', '/leave-approval...', Array)
+#7 {main}
+[01-Jun-2026 17:09:36 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=suswinalt@gmail.com,megha.wabhitkar@blue-planet.com,neha.bhatnagar@blue-planet.com
+[01-Jun-2026 17:10:40 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('TEST001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('TEST001', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('TEST001', 'ADM001', '6a1d6f7452faa45...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[01-Jun-2026 17:10:44 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=suswinalt@gmail.com,megha.wabhitkar@blue-planet.com,neha.bhatnagar@blue-planet.com
+[01-Jun-2026 17:10:52 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('TEST001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('TEST001', 'Leave Rejected', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('TEST001', 'ADM001', '6a1d44f65501816...', 'Leave Rejected', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[01-Jun-2026 17:10:56 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=suswinalt@gmail.com,megha.wabhitkar@blue-planet.com,neha.bhatnagar@blue-planet.com
+[05-Jun-2026 18:17:52 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIW0013')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('BPIW0013', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('BPIW0013', 'XWM001', '6a1d0edb7d6d496...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:17:55 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=srideepika.sivakumar@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:18:07 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM125')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM125', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('XWM125', 'XWM001', '6a181f0f0eb8459...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:18:11 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=siddharth.dixit@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:18:31 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIW0013')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('BPIW0013', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('BPIW0013', 'XWM001', '6a1547a1415d530...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:18:34 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=srideepika.sivakumar@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:18:39 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM128')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM128', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('XWM128', 'XWM001', '69f9e8d16cd0a61...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:18:43 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=poonam.bhosle@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:18:52 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('YEPL085', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('YEPL085', 'XWM001', '698ee3a5bda7529...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:18:59 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=esg.bpb@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:19:07 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('YEPL085', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('YEPL085', 'XWM001', '698ee3f5a127380...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:19:10 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=esg.bpb@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:19:13 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('YEPL085', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('YEPL085', 'XWM001', '69cb485b3572e50...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:19:17 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=esg.bpb@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:19:53 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL084')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('YEPL084', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('YEPL084', 'XWM001', '6a195dff6e12f14...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:19:57 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=kailas.patil@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:20:50 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM125')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM125', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('XWM125', 'XWM001', '6a17d2cda8ac449...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:20:53 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=siddharth.dixit@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:20:57 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM125')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM125', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('XWM125', 'XWM001', '6a17d17c92ba096...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:21:01 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=siddharth.dixit@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:21:05 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIW0013')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('BPIW0013', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('BPIW0013', 'XWM001', '6a0ff35b97d0667...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:21:08 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=srideepika.sivakumar@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:21:12 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('YEPL085', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('YEPL085', 'XWM001', '69fd6ad898fd384...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:21:15 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=esg.bpb@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:21:28 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM128')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM128', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('XWM128', 'XWM001', '69f9e8a4c185729...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:21:32 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=poonam.bhosle@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:21:34 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIW0013')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('BPIW0013', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('BPIW0013', 'XWM001', '69eb32cfc9d6562...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:21:38 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=srideepika.sivakumar@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:21:40 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM125')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM125', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('XWM125', 'XWM001', '69ce3fdb1fd3c41...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:21:44 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=siddharth.dixit@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:21:48 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL078')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('YEPL078', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('YEPL078', 'XWM001', '69ccfad30be2e65...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:21:51 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=shivraj.khutwad@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:21:57 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM128')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM128', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('XWM128', 'XWM001', '69cb5f6e9d10c60...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:22:01 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=poonam.bhosle@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:22:10 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM119')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('XWM119', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('XWM119', 'XWM001', '69cb5d79eef2395...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:22:13 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=megha.wabhitkar@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:33:20 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIW0013')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('BPIW0013', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('BPIW0013', 'XWM001', '69eb326d6166c88...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:33:23 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=srideepika.sivakumar@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:33:28 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL078')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('YEPL078', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('YEPL078', 'XWM001', '69ccfb11bb87496...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:33:31 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=shivraj.khutwad@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com
+[05-Jun-2026 18:33:36 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2227): bp_send_push_notification_to_staff('YEPL085', 'Leave Approved', 'Your leave has ...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_update_status.php(143): bp_deliver_leave_notification_result('YEPL085', 'XWM001', '69ccb3d60491642...', 'Leave Approved', 'Your leave has ...', '/leave?leaveId=...', Array)
+#6 {main}
+[05-Jun-2026 18:33:45 Asia/Kolkata] bp_mobile_app leave_status_mail sent=1 to=esg.bpb@blue-planet.com,vishal.khalde@blue-planet.com,neha.bhatnagar@blue-planet.com,rupali.dhas@blue-planet.com

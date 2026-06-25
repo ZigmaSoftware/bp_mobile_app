@@ -1,0 +1,5 @@
+Tutorial/*.mp4
+Tutorial/*.mp4
+*.json
+.DS_Store
+__MACOSX/

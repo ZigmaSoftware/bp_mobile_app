@@ -387,7 +387,16 @@ function bp_firebase_service_account(): array
 
     if (!is_array($config)) {
         $envFile = trim((string) getenv('BP_FIREBASE_SERVICE_ACCOUNT_FILE'));
-        $downloadedServiceAccounts = glob(__DIR__ . '/*firebase-adminsdk*.json') ?: [];
+        // Look for a downloaded Firebase admin SDK key (e.g.
+        // *firebase-adminsdk*.json) not only beside this file but also in the
+        // app root and a /config folder, so a slightly misplaced upload on the
+        // server still works. macOS resource-fork stubs (__MACOSX/._*) are
+        // never matched because we glob explicit directories, not __MACOSX.
+        $downloadedServiceAccounts = array_merge(
+            glob(__DIR__ . '/*firebase-adminsdk*.json') ?: [],
+            glob(dirname(__DIR__) . '/*firebase-adminsdk*.json') ?: [],
+            glob(dirname(__DIR__) . '/config/*firebase-adminsdk*.json') ?: []
+        );
         $candidates = array_filter(array_unique(array_merge([
             $envFile,
             __DIR__ . '/firebase-service-account.json',

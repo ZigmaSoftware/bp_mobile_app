@@ -17,6 +17,7 @@ try {
     $context = bp_att_require_context($staffIdInput);
     $employeeId = (string)($context['employee_id'] ?? '');
     $projectLocations = bp_att_project_locations_for_context($context);
+    $headOfficeAccess = bp_att_context_has_head_office_access($context, $projectLocations);
 
     bp_send_json([
         'status' => true,
@@ -42,6 +43,13 @@ try {
             'unread_notifications_count' => bp_att_notifications_unread_count($employeeId),
             'geofence_radius_meters' => 200,
             'project_locations' => $projectLocations,
+            'can_use_direct_punch' => $headOfficeAccess,
+            'can_configure_attendance_punch' => $headOfficeAccess,
+            'attendance_features' => [
+                'direct_punch' => $headOfficeAccess,
+                'attendance_settings' => $headOfficeAccess,
+                'head_office_project_id' => bp_att_head_office_project_id(),
+            ],
             'server_time' => bp_now(),
         ],
     ]);

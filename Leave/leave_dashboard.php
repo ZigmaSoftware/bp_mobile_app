@@ -38,7 +38,11 @@ if ($calendarFromDate === null || $calendarToDate === null || $calendarFromDate 
 }
 
 $leaveTypes = bp_fetch_leave_types();
-$balances = bp_fetch_leave_balances((string)($staff['staff_name'] ?? ''));
+$balances = bp_fetch_leave_balances(
+    (string)($staff['staff_name'] ?? ''),
+    (string)($staff['unique_id'] ?? ''),
+    $employeeId
+);
 $attendanceMonthFrom = bp_date_ymd(bp_str($input, 'attendance_month_from'));
 $attendanceMonthTo = bp_date_ymd(bp_str($input, 'attendance_month_to'));
 $attendanceSummary = bp_fetch_attendance_summary(

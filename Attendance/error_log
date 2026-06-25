@@ -33,3 +33,1101 @@ Stack trace:
 #0 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once()
 #1 {main}
   thrown in /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php on line 7
+[19-May-2026 10:10:52 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL075')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('YEPL075', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('YEPL075', 'TEST001', '52079', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52079', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 10:10:52 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('XWM085', 'TEST001', '52079', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52079', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 10:10:52 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52079', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52079', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 10:10:52 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52079', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52079', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 11:58:51 Asia/Kolkata] bp_mobile_app blueplanet connection failed: SQLSTATE[HY000] [2002] Connection timed out
+[19-May-2026 12:39:30 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL075')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('YEPL075', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('YEPL075', 'TEST001', '52081', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52081', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 12:39:30 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('XWM085', 'TEST001', '52081', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52081', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 12:39:30 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52081', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52081', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 12:39:30 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52081', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52081', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 12:53:08 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL075')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('YEPL075', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('YEPL075', 'TEST001', '52082', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52082', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 12:53:08 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('XWM085', 'TEST001', '52082', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52082', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 12:53:08 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52082', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52082', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 12:53:08 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2487): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2532): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52082', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2719): bp_att_deliver_notification_results(Array, 'TEST001', '52082', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[19-May-2026 12:55:10 Asia/Kolkata] PDOException: SQLSTATE[HY000] [1203] User zigma already has more than 'max_user_connections' active connections in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:48
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(48): PDO->__construct('mysql:host=loca...', 'zigma', '?WSzvxHv1LGZ', Array)
+#1 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php(34): db->__construct('mysql', 'localhost', 'zigma', '?WSzvxHv1LGZ', 'blue_planet_erp')
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/bootstrap.php(65): require_once('/home/ie9owkuzk...')
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(4): require_once('/home/ie9owkuzk...')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(5): require_once('/home/ie9owkuzk...')
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once('/home/ie9owkuzk...')
+#6 {main}
+[22-May-2026 09:36:06 Asia/Kolkata] bp_mobile_app blueplanet connection failed: SQLSTATE[HY000] [2002] Connection timed out
+[26-May-2026 09:21:02 Asia/Kolkata] bp_mobile_app blueplanet connection failed: SQLSTATE[HY000] [2002] Connection timed out
+[26-May-2026 09:21:22 Asia/Kolkata] bp_mobile_app blueplanet connection failed: SQLSTATE[HY000] [2002] Connection timed out
+[26-May-2026 10:00:04 Asia/Kolkata] bp_mobile_app blueplanet connection failed: SQLSTATE[HY000] [2002] Connection timed out
+[26-May-2026 10:04:41 Asia/Kolkata] bp_mobile_app blueplanet connection failed: SQLSTATE[HY000] [2002] Connection timed out
+[26-May-2026 10:33:56 Asia/Kolkata] bp_mobile_app blueplanet connection failed: SQLSTATE[HY000] [2002] Connection timed out
+[27-May-2026 10:41:09 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0082', '52264', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0082', '52264', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0082')
+#8 {main}
+[27-May-2026 10:41:09 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0082', '52264', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0082', '52264', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0082')
+#8 {main}
+[27-May-2026 10:41:09 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0082', '52264', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0082', '52264', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0082')
+#8 {main}
+[01-Jun-2026 12:47:56 Asia/Kolkata] PDOException: SQLSTATE[HY000] [1203] User zigma already has more than 'max_user_connections' active connections in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:48
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(48): PDO->__construct('mysql:host=loca...', 'zigma', '?WSzvxHv1LGZ', Array)
+#1 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php(34): db->__construct('mysql', 'localhost', 'zigma', '?WSzvxHv1LGZ', 'blue_planet_erp')
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/bootstrap.php(65): require_once('/home/ie9owkuzk...')
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(4): require_once('/home/ie9owkuzk...')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(5): require_once('/home/ie9owkuzk...')
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once('/home/ie9owkuzk...')
+#6 {main}
+[01-Jun-2026 13:09:28 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_e986faea0492e345296773445ef60164, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:09:28 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:09:41 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_e927f93a8c1c62b60df3eedc902f9d1c, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:09:41 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:09:44 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_26ec37c518d04947bbf611d8fb604657, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:09:44 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:09:53 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_08c4d0958b39c0dfc66c331d34ea23bc, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:09:53 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:09:58 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_61dba853cdb99d5f414e055676013cf3, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:09:58 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:05 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_1406a883555fe230984c10f0f08d4d83, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:05 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:05 Asia/Kolkata] PDOException: SQLSTATE[HY000] [1203] User zigma already has more than 'max_user_connections' active connections in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:48
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(48): PDO->__construct('mysql:host=loca...', 'zigma', '?WSzvxHv1LGZ', Array)
+#1 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php(34): db->__construct('mysql', 'localhost', 'zigma', '?WSzvxHv1LGZ', 'blue_planet_erp')
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/bootstrap.php(65): require_once('/home/ie9owkuzk...')
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(4): require_once('/home/ie9owkuzk...')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(5): require_once('/home/ie9owkuzk...')
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_dashboard.php(4): require_once('/home/ie9owkuzk...')
+#6 {main}
+[01-Jun-2026 13:10:11 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_c2ae9449645d3c74f053a03128e94908, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:11 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:12 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_1041992a37650135a177cced6396ad12, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:12 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:27 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_262e9390781b20ac34794ae53497cb11, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:27 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:42 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_bc9679268282663637b2667541d57672, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:10:42 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:32 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_436641db317d13c41b27c65bf64a84bf, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:32 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:34 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_ee77d5b51412774245412fdb27b1ed4d, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:34 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:37 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_b355a9fc705d2a337978e1748977f24e, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:37 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:53 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_9d0f79d30286ea297777bd5fc9287ba2, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:53 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:55 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_e8629c012136d87fb4132cbe5ee77484, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:11:55 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:12:11 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_3c23f783a36f0605f537e9e8c560f8ec, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:12:11 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:12:41 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_654645bfca47c59c6a40276f66ebec90, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:12:41 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:13:07 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_8b55e19fa85c75510817e3abe0b775a5, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:13:07 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:13:11 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_f68ac5163d887af3188e05082a1b6510, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:13:11 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:14:13 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_45ee38eb63c443fe83e5e4840b97d478, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:14:13 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:14:18 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_dd244df84a43031d25ed85d0be0521c3, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:14:18 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:14:36 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_d533755446cdb3914198d807e44be65c, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:14:36 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:14:49 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_d03e289e60d138a797ca64dce9ea7d9c, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:14:49 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:06 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_76e0e5b2743fa619e650b64c95bb620b, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:06 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:11 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_43bff247e74d5afac160becc5cc1b865, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:11 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:12 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_65d3a32443e3d0180ac66db06f89eb9f, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:12 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:21 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_1295e1f064bcb5d2f93b8423ce27996a, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:21 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:35 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_2e849983fe9cd11c06fe3c2bb034cf5e, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:35 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:43 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_9bf061138c32dde25a87dd8c3b182ab1, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:43 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:54 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_fc35b48fca741e8df09fd1ee999e19ff, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:15:54 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:16:03 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_d91468af0718717c9762ce3cfc47ed22, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:16:03 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:16:11 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_02606ca73e789cacd7610de24367b965, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:16:11 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:16:22 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_f88f67de8864a3eebf73db31838ecd40, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:16:22 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:16:44 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_d13abb0a379d8ba4b8e4445eb9c3570c, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:16:44 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:17:09 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_45f24d4726be4a760257d7a9bc764f64, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:17:09 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:17:11 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_755db47b980b16e70799fffe95b12cd9, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:17:11 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:17:31 Asia/Kolkata] PHP Warning:  session_start(): open(/opt/alt/php74/var/lib/php/session/sess_eae98e9c212a171767b788e6106ae293, O_RDWR) failed: Disk quota exceeded (122) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 13:17:31 Asia/Kolkata] PHP Warning:  session_start(): Failed to read session data: files (path: /opt/alt/php74/var/lib/php/session) in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbconfig.php on line 2
+[01-Jun-2026 14:05:05 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'TEST001', '52363', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52363', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[01-Jun-2026 14:05:05 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52363', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52363', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[01-Jun-2026 14:05:05 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'TEST001', '52363', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52363', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[01-Jun-2026 14:05:05 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52363', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52363', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[01-Jun-2026 17:30:01 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0064', '52368', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52368', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[01-Jun-2026 17:30:01 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0064', '52368', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52368', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[01-Jun-2026 17:30:01 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'BPIN0064', '52368', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52368', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[01-Jun-2026 17:30:01 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0064', '52368', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52368', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[01-Jun-2026 17:30:18 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0064', '52369', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52369', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[01-Jun-2026 17:30:18 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0064', '52369', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52369', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[01-Jun-2026 17:30:18 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'BPIN0064', '52369', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52369', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[01-Jun-2026 17:30:18 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0064', '52369', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52369', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[01-Jun-2026 17:52:55 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'TEST001', '52370', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52370', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[01-Jun-2026 17:52:55 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52370', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52370', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[01-Jun-2026 17:52:55 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'TEST001', '52370', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52370', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[01-Jun-2026 17:52:55 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52370', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52370', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_submit_pending.php(45): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 10:26:34 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0064', '52398', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52398', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:34 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0064', '52398', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52398', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:34 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'BPIN0064', '52398', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52398', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:34 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0064', '52398', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52398', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:42 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0064', '52399', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52399', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:42 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0064', '52399', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52399', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:42 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'BPIN0064', '52399', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52399', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:42 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0064', '52399', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52399', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:42 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0064', '52400', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52400', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:42 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0064', '52400', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52400', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:42 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'BPIN0064', '52400', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52400', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:26:42 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0064', '52400', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52400', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:27:27 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0064', '52401', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52401', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:27:27 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0064', '52401', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52401', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:27:27 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'BPIN0064', '52401', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52401', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 10:27:27 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0064', '52401', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52401', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[02-Jun-2026 17:55:16 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'TEST001', '52405', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52405', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:16 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52405', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52405', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:16 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'TEST001', '52405', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52405', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:16 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52405', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52405', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:18 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'TEST001', '52406', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52406', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:18 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52406', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52406', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:18 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'TEST001', '52406', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52406', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:18 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52406', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52406', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:30 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'TEST001', '52407', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52407', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:30 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52407', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52407', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:30 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'TEST001', '52407', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52407', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:30 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52407', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52407', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:54 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'TEST001', '52408', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52408', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:54 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52408', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52408', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:54 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'TEST001', '52408', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52408', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:55:54 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52408', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52408', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:57:22 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('TEST001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('TEST001', 'Attendance Appr...', 'Your outside ge...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_update_status.php(175): bp_att_deliver_notification_result('TEST001', 'BPIN0093', '52408', 'Attendance Appr...', 'Your outside ge...', '/attendance-sum...', Array)
+#6 {main}
+[02-Jun-2026 17:57:28 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('TEST001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('TEST001', 'Attendance Reje...', 'Your outside ge...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_update_status.php(175): bp_att_deliver_notification_result('TEST001', 'BPIN0093', '52406', 'Attendance Reje...', 'Your outside ge...', '/attendance-sum...', Array)
+#6 {main}
+[02-Jun-2026 17:57:31 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('TEST001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('TEST001', 'Attendance Reje...', 'Your outside ge...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_update_status.php(175): bp_att_deliver_notification_result('TEST001', 'BPIN0093', '52407', 'Attendance Reje...', 'Your outside ge...', '/attendance-sum...', Array)
+#6 {main}
+[02-Jun-2026 17:57:33 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('TEST001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('TEST001', 'Attendance Reje...', 'Your outside ge...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_update_status.php(175): bp_att_deliver_notification_result('TEST001', 'BPIN0093', '52405', 'Attendance Reje...', 'Your outside ge...', '/attendance-sum...', Array)
+#6 {main}
+[02-Jun-2026 17:58:13 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'TEST001', '52409', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52409', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:58:13 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52409', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52409', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:58:13 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'TEST001', '52409', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52409', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:58:13 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52409', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52409', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:58:55 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('TEST001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('TEST001', 'Attendance Appr...', 'Your outside ge...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_update_status.php(175): bp_att_deliver_notification_result('TEST001', 'BPIN0093', '52409', 'Attendance Appr...', 'Your outside ge...', '/attendance-sum...', Array)
+#6 {main}
+[02-Jun-2026 17:59:36 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'TEST001', '52410', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52410', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:59:36 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'TEST001', '52410', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52410', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:59:36 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'TEST001', '52410', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52410', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 17:59:36 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'TEST001', '52410', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'TEST001', '52410', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'TEST001')
+#8 {main}
+[02-Jun-2026 18:00:14 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('TEST001')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('TEST001', 'Attendance Appr...', 'Your outside ge...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_update_status.php(175): bp_att_deliver_notification_result('TEST001', 'BPIN0093', '52410', 'Attendance Appr...', 'Your outside ge...', '/attendance-sum...', Array)
+#6 {main}
+[03-Jun-2026 09:57:37 Asia/Kolkata] bp_mobile_app blueplanet connection failed: SQLSTATE[HY000] [2002] Connection timed out
+[03-Jun-2026 09:58:03 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0064', '52429', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52429', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[03-Jun-2026 09:58:03 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0064', '52429', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52429', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[03-Jun-2026 09:58:03 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'BPIN0064', '52429', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52429', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[03-Jun-2026 09:58:03 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0064', '52429', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0064', '52429', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0064')
+#8 {main}
+[04-Jun-2026 10:22:28 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0093')
+#8 {main}
+[04-Jun-2026 10:22:28 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0093')
+#8 {main}
+[04-Jun-2026 10:22:28 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL091')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('YEPL091', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('YEPL091', 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0093')
+#8 {main}
+[04-Jun-2026 10:22:28 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0093')
+#8 {main}
+[04-Jun-2026 10:22:28 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0093', '52457', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0093')
+#8 {main}
+[05-Jun-2026 10:40:46 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('XWM085')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('XWM085', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('XWM085', 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0039')
+#8 {main}
+[05-Jun-2026 10:40:46 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPGN0170')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPGN0170', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPGN0170', 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0039')
+#8 {main}
+[05-Jun-2026 10:40:46 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('YEPL091')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('YEPL091', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('YEPL091', 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0039')
+#8 {main}
+[05-Jun-2026 10:40:46 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0093')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0093', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0093', 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0039')
+#8 {main}
+[05-Jun-2026 10:40:46 Asia/Kolkata] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'blue_planet_erp.bp_device_tokens' doesn't exist in /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php:306
+Stack trace:
+#0 /home/ie9owkuzkgd4/public_html/blue_planet_erp/config/dbclass.php(306): PDOStatement->execute()
+#1 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(10): db->select(Array, Array)
+#2 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2024): bp_fetch_rows('bp_device_token...', Array, Array)
+#3 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Leave/leave_helpers.php(2141): bp_fetch_device_tokens('BPIN0082')
+#4 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2684): bp_send_push_notification_to_staff('BPIN0082', 'Attendance Appr...', 'New outside geo...', Array)
+#5 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2729): bp_att_deliver_notification_result('BPIN0082', 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#6 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_helpers.php(2916): bp_att_deliver_notification_results(Array, 'BPIN0039', '52483', 'Attendance Appr...', 'New outside geo...', '/attendance-app...', Array)
+#7 /home/ie9owkuzkgd4/public_html/bp_mobile_app/Attendance/attendance_direct_punch.php(148): bp_att_notify_pending_approval(Array, 'BPIN0039')
+#8 {main}

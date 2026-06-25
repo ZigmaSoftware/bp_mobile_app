@@ -36,6 +36,16 @@ $items = array_map(static function (array $item): array {
     $item['check_in_image_url_candidates'] = $inImageCandidates;
     $item['check_out_image_url'] = bp_att_first_url_candidate($outImageCandidates);
     $item['check_out_image_url_candidates'] = $outImageCandidates;
+
+    // Alias fields expected by the mobile app's AttendanceRecord model.
+    // The view returns in_*/out_* keys; the app reads check_in_*/check_out_*.
+    $item['check_in_latitude'] = (string)($item['in_latitude'] ?? '');
+    $item['check_in_longitude'] = (string)($item['in_longitude'] ?? '');
+    $item['check_out_latitude'] = (string)($item['out_latitude'] ?? '');
+    $item['check_out_longitude'] = (string)($item['out_longitude'] ?? '');
+    $item['check_in_image'] = (string)($item['in_image_path'] ?? '');
+    $item['check_out_image'] = (string)($item['out_image_path'] ?? '');
+
     return $item;
 }, $items);
 

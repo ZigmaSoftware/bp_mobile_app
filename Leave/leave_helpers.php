@@ -519,17 +519,40 @@ function bp_fetch_leave_type_map(): array
     return $map;
 }
 
-function bp_fetch_leave_balances(string $staffName): array
+function bp_fetch_leave_balances(string $staffName, string $staffUniqueId = '', string $employeeId = ''): array
 {
-    if ($staffName === '') {
+    $staffName = trim($staffName);
+    $staffUniqueId = trim($staffUniqueId);
+    $employeeId = trim($employeeId);
+    if ($staffName === '' && $staffUniqueId === '' && $employeeId === '') {
         return [];
     }
 
-    $rows = bp_fetch_rows(
-        'vw_leave_balance',
-        ['leave_type', 'leave_master_id', 'used_leave', 'balance'],
-        ['staff_name' => $staffName]
-    );
+    $viewColumns = bp_table_columns('vw_leave_balance');
+    $queries = [];
+    if ($staffUniqueId !== '' && isset($viewColumns['staff_unique_id'])) {
+        $queries[] = 'staff_unique_id = ' . bp_sql_quote($staffUniqueId);
+    }
+    if ($employeeId !== '' && isset($viewColumns['employee_id'])) {
+        $queries[] = 'employee_id = ' . bp_sql_quote($employeeId);
+    }
+    if ($staffName !== '' && (empty($viewColumns) || isset($viewColumns['staff_name']))) {
+        // Match the staff name case-insensitively and trimmed. An exact `=`
+        // match silently returns nothing when casing or whitespace differs.
+        $queries[] = 'UPPER(TRIM(staff_name)) = UPPER(TRIM(' . bp_sql_quote($staffName) . '))';
+    }
+
+    $rows = [];
+    foreach ($queries as $where) {
+        $rows = bp_fetch_rows(
+            'vw_leave_balance',
+            ['leave_type', 'leave_master_id', 'used_leave', 'balance'],
+            $where
+        );
+        if (!empty($rows)) {
+            break;
+        }
+    }
 
     $out = [];
     foreach ($rows as $row) {

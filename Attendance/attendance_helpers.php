@@ -332,6 +332,9 @@ function bp_att_status_label(int $status): string
     if ($status === 2) {
         return 'Rejected';
     }
+    if ($status === 3) {
+        return 'Deleted';
+    }
     return 'Pending';
 }
 
@@ -790,6 +793,200 @@ function bp_att_project_locations_for_context(array $context): array
     return bp_att_fetch_project_locations(bp_att_project_ids_from_context($context));
 }
 
+function bp_att_direct_is_valid_coordinate(?float $latitude, ?float $longitude): bool
+{
+    if ($latitude === null || $longitude === null) {
+        return false;
+    }
+
+    if (!is_finite($latitude) || !is_finite($longitude)) {
+        return false;
+    }
+
+    if ($latitude < -90 || $latitude > 90 || $longitude < -180 || $longitude > 180) {
+        return false;
+    }
+
+    return abs($latitude) > 0.000001 && abs($longitude) > 0.000001;
+}
+
+function bp_att_head_office_project_id(): string
+{
+    return '69858f736caee70745';
+}
+
+function bp_att_project_location_is_head_office(array $project): bool
+{
+    $projectId = trim((string)($project['project_id'] ?? $project['unique_id'] ?? ''));
+    $projectName = strtoupper(trim((string)($project['project_name'] ?? '')));
+
+    return $projectId === bp_att_head_office_project_id()
+        || $projectName === 'BP HEAD OFFICE';
+}
+
+function bp_att_context_has_head_office_access(array $context, ?array $projectLocations = null): bool
+{
+    foreach (bp_att_project_ids_from_context($context) as $projectId) {
+        if (trim((string)$projectId) === bp_att_head_office_project_id()) {
+            return true;
+        }
+    }
+
+    foreach ((array)($projectLocations ?? bp_att_project_locations_for_context($context)) as $project) {
+        if (is_array($project) && bp_att_project_location_is_head_office($project)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function bp_att_distance_meters(float $fromLatitude, float $fromLongitude, float $toLatitude, float $toLongitude): float
+{
+    $earthRadiusMeters = 6371000;
+    $lat1 = deg2rad($fromLatitude);
+    $lat2 = deg2rad($toLatitude);
+    $deltaLat = deg2rad($toLatitude - $fromLatitude);
+    $deltaLon = deg2rad($toLongitude - $fromLongitude);
+
+    $a = sin($deltaLat / 2) * sin($deltaLat / 2)
+        + cos($lat1) * cos($lat2) * sin($deltaLon / 2) * sin($deltaLon / 2);
+    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+    return $earthRadiusMeters * $c;
+}
+
+function bp_att_nearest_project_location(array $projectLocations, float $latitude, float $longitude): ?array
+{
+    $nearest = null;
+    $nearestDistance = null;
+
+    foreach ($projectLocations as $project) {
+        if (!is_array($project)) {
+            continue;
+        }
+
+        $projectLatitude = bp_att_float_or_null($project['latitude'] ?? null);
+        $projectLongitude = bp_att_float_or_null($project['longitude'] ?? null);
+        if (!bp_att_direct_is_valid_coordinate($projectLatitude, $projectLongitude)) {
+            continue;
+        }
+
+        $distance = bp_att_distance_meters($latitude, $longitude, (float)$projectLatitude, (float)$projectLongitude);
+        if ($nearestDistance === null || $distance < $nearestDistance) {
+            $nearest = $project;
+            $nearestDistance = $distance;
+        }
+    }
+
+    if ($nearest === null || $nearestDistance === null) {
+        return null;
+    }
+
+    $nearest['distance_meters'] = $nearestDistance;
+    return $nearest;
+}
+
+function bp_att_direct_punch_timestamp(array $input): array
+{
+    $now = new DateTimeImmutable('now', new DateTimeZone('Asia/Kolkata'));
+    $recognitionDate = bp_date_ymd(bp_str($input, 'recognition_date')) ?? $now->format('Y-m-d');
+    $recognitionTime = trim(bp_str($input, 'recognition_time', $now->format('H:i:s')));
+    $records = trim(bp_str($input, 'records', $recognitionDate . ' ' . $recognitionTime));
+
+    return [$recognitionDate, $recognitionTime, $records];
+}
+
+function bp_att_insert_direct_recognized(array $context, array $input, float $latitude, float $longitude): array
+{
+    [$recognitionDate, $recognitionTime, $records] = bp_att_direct_punch_timestamp($input);
+    $employeeId = trim((string)($context['employee_id'] ?? ''));
+    $employeeName = trim((string)($context['staff']['staff_name'] ?? ''));
+
+    $insert = bp_att_insert_row_raw('zigfly_recognized', [
+        'emp_id' => $employeeId,
+        'name' => $employeeName,
+        'records' => $records,
+        'captured_image_path' => 'direct_punch',
+        'similarity_score' => '0',
+        'latitude' => (string)$latitude,
+        'longitude' => (string)$longitude,
+        'recognition_date' => $recognitionDate,
+        'recognition_time' => $recognitionTime,
+    ]);
+
+    if (!$insert || !($insert->status ?? false)) {
+        return [
+            'status' => false,
+            'message' => 'Failed to mark direct attendance',
+            'error' => bp_att_error_text($insert->error ?? ''),
+        ];
+    }
+
+    return [
+        'status' => true,
+        'recognition_date' => $recognitionDate,
+        'recognition_time' => $recognitionTime,
+        'records' => $records,
+    ];
+}
+
+function bp_att_insert_direct_approval(array $context, array $input, float $latitude, float $longitude): array
+{
+    [$recognitionDate, $recognitionTime, $records] = bp_att_direct_punch_timestamp($input);
+    $employeeId = trim((string)($context['employee_id'] ?? ''));
+    $employeeName = trim((string)($context['staff']['staff_name'] ?? ''));
+    $now = bp_now();
+
+    $insert = bp_att_insert_row_raw('att_approval', [
+        'emp_id' => $employeeId,
+        'name' => $employeeName,
+        'records' => $records,
+        'captured_image_path' => 'direct_punch',
+        'similarity_score' => '0',
+        'latitude' => (string)$latitude,
+        'longitude' => (string)$longitude,
+        'recognition_date' => $recognitionDate,
+        'recognition_time' => $recognitionTime,
+        'status' => 0,
+        'created' => $now,
+        'updated' => $now,
+        'is_active' => 1,
+        'is_delete' => 0,
+    ]);
+
+    if (!$insert || !($insert->status ?? false)) {
+        return [
+            'status' => false,
+            'message' => 'Failed to send direct attendance for approval',
+            'error' => bp_att_error_text($insert->error ?? ''),
+        ];
+    }
+
+    $approvalRow = bp_att_find_pending_approval_for_employee(
+        $employeeId,
+        null,
+        $records,
+        $recognitionDate
+    );
+
+    if (!$approvalRow) {
+        return [
+            'status' => false,
+            'message' => 'Direct attendance approval was created but could not be reloaded',
+            'error' => '',
+        ];
+    }
+
+    return [
+        'status' => true,
+        'approval' => $approvalRow,
+        'recognition_date' => $recognitionDate,
+        'recognition_time' => $recognitionTime,
+        'records' => $records,
+    ];
+}
+
 function bp_att_sql_date_filter(string $column, ?string $fromDate, ?string $toDate): string
 {
     $parts = [];
@@ -1000,7 +1197,7 @@ function bp_att_fetch_employee_history(string $employeeId, ?string $fromDate = n
     }
 
     $limit = max(1, min($limit, 365));
-    $where = "a.is_delete = 0 AND a.emp_id = " . bp_sql_quote($employeeId);
+    $where = "a.is_delete = 0 AND a.status <> 3 AND a.emp_id = " . bp_sql_quote($employeeId);
     if ($status !== null) {
         $where .= " AND a.status = " . intval($status);
     }
