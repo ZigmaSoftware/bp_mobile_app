@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/attendance_helpers.php';
+require_once __DIR__ . '/../WorkFromHome/wfh_helpers.php';
 
 /**
  * Monthly / date-range attendance report for head & HR users.
@@ -71,6 +72,7 @@ function bp_att_report_project_names(array $projectIds): array
 try {
     $input = bp_input();
     $staffIdInput = bp_str($input, 'staff_unique_id', bp_str($input, 'employee_id'));
+    $projectFilter = bp_str($input, 'project');
 
     if ($staffIdInput === '') {
         bp_send_json([
@@ -138,9 +140,13 @@ try {
         $departmentCol ?: ''
     );
 
+    // Match the web report exactly: employee scope + BP head-office / non-HO
+    // work_location partition + optional project (work_location) filter.
     $where = $shiftDateCol . ' >= ' . bp_sql_quote($fromDate)
         . ' AND ' . $shiftDateCol . ' <= ' . bp_sql_quote($toDate)
-        . $scopeClause;
+        . $scopeClause
+        . bp_att_ho_partition_clause($context, $workLocationCol ?: '')
+        . bp_att_report_project_clause($projectFilter, $workLocationCol ?: '');
 
     $rows = bp_fetch_rows('vw_attendance_with_shift', ['*'], $where);
 
@@ -148,6 +154,7 @@ try {
         'present' => [],
         'absent' => [],
         'leave' => [],
+        'wfh' => [],
         'weekoff_holiday' => [],
     ];
 
@@ -166,17 +173,16 @@ try {
     }
 
     $departmentNameCache = [];
+    $employeeMeta = [];
 
     foreach ($rows as $row) {
         $statusRaw = trim((string)bp_att_attendance_view_value($row, $statusCol));
-        $bucket = bp_attendance_summary_bucket($statusRaw);
 
-        // The report groups permission days under "present" (the employee was
-        // at work). Unknown/blank statuses are skipped.
-        if ($bucket === 'permission') {
-            $bucket = 'present';
-        }
-        if (!isset($buckets[$bucket])) {
+        // Web parity: classify with the report's exact status lists. Rows that
+        // match none of the four buckets (Permission, Missed In, Short Hours,
+        // blank …) are not counted anywhere — exactly like the web report.
+        $bucket = bp_att_report_exact_bucket($statusRaw);
+        if ($bucket === null || !isset($buckets[$bucket])) {
             continue;
         }
 
@@ -214,6 +220,42 @@ try {
             'worked_hours' => $workedHours,
             'attendance_status' => $statusRaw,
         ];
+
+        if ($employeeId !== '' && !isset($employeeMeta[$employeeId])) {
+            $employeeMeta[$employeeId] = [
+                'staff_name' => $staffName,
+                'location' => $locationName,
+                'department' => $departmentName,
+                'planned_shift' => $plannedShift,
+            ];
+        }
+    }
+
+    $allowedEmployeeIds = array_keys($employeeMeta);
+    if (!empty($allowedEmployeeIds) && !empty(bp_table_columns(BP_WFH_TABLE))) {
+        $quotedEmployees = array_map('bp_sql_quote', $allowedEmployeeIds);
+        $wfhWhere = 'employee_id IN (' . implode(', ', $quotedEmployees) . ')'
+            . ' AND date >= ' . bp_sql_quote($fromDate)
+            . ' AND date <= ' . bp_sql_quote($toDate)
+            . ' AND status = 1 AND is_delete = 0';
+        $wfhRows = bp_wfh_fetch_rows_by_where($wfhWhere);
+
+        foreach ($wfhRows as $wfhRow) {
+            $employeeId = trim((string)($wfhRow['employee_id'] ?? ''));
+            $meta = $employeeMeta[$employeeId] ?? [];
+            $buckets['wfh'][] = [
+                'shift_date' => (string)($wfhRow['date'] ?? ''),
+                'employee_id' => $employeeId,
+                'staff_name' => (string)(($wfhRow['employee_name'] ?? '') ?: ($meta['staff_name'] ?? '')),
+                'location' => (string)($meta['location'] ?? ''),
+                'department' => (string)(($wfhRow['department_name'] ?? '') ?: ($meta['department'] ?? '')),
+                'planned_shift' => (string)($meta['planned_shift'] ?? ''),
+                'check_in' => '',
+                'check_out' => '',
+                'worked_hours' => '',
+                'attendance_status' => 'Work From Home',
+            ];
+        }
     }
 
     // Stable ordering: by date then employee, so the lists read naturally.
@@ -232,10 +274,12 @@ try {
         'present' => count($buckets['present']),
         'absent' => count($buckets['absent']),
         'leave' => count($buckets['leave']),
+        'wfh' => count($buckets['wfh']),
         'weekoff_holiday' => count($buckets['weekoff_holiday']),
         'total' => count($buckets['present'])
             + count($buckets['absent'])
             + count($buckets['leave'])
+            + count($buckets['wfh'])
             + count($buckets['weekoff_holiday']),
     ];
 
@@ -256,6 +300,7 @@ try {
             'present' => $buckets['present'],
             'absent' => $buckets['absent'],
             'leave' => $buckets['leave'],
+            'wfh' => $buckets['wfh'],
             'weekoff_holiday' => $buckets['weekoff_holiday'],
             'server_time' => bp_now(),
         ],

@@ -95,6 +95,12 @@ bp_send_json([
         ],
         'from_date' => $fromDate,
         'to_date' => $toDate,
+        'source_tables' => [
+            'vw_attendance_with_shift',
+            'att_approval',
+            'zigfly_recognized',
+            'blueplanet.recognized',
+        ],
         'items' => $items,
         'server_time' => bp_now(),
     ],

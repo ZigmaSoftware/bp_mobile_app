@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/leave_helpers.php';
+require_once __DIR__ . '/../WorkFromHome/wfh_helpers.php';
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     bp_send_json([
@@ -222,6 +223,13 @@ if (!$res || !($res->status ?? false)) {
     ], 500);
 }
 
+$cancelledWfhCount = 0;
+try {
+    $cancelledWfhCount = bp_wfh_cancel_for_leave($employeeId, $fromDate, $toDate, $leaveUniqueId);
+} catch (Throwable $e) {
+    error_log('bp_mobile_app leave_apply WFH cancellation error: ' . bp_error_text($e));
+}
+
 $documentSaved = null;
 $documentInserted = false;
 $warnings = [];
@@ -363,6 +371,7 @@ bp_send_json([
         'notification' => $notification,
         'push' => $push,
         'email' => $email,
+        'cancelled_wfh_count' => $cancelledWfhCount,
         'warnings' => $warnings,
     ],
 ]);

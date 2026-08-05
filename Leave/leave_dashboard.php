@@ -43,6 +43,7 @@ $balances = bp_fetch_leave_balances(
     (string)($staff['unique_id'] ?? ''),
     $employeeId
 );
+
 $attendanceMonthFrom = bp_date_ymd(bp_str($input, 'attendance_month_from'));
 $attendanceMonthTo = bp_date_ymd(bp_str($input, 'attendance_month_to'));
 $attendanceSummary = bp_fetch_attendance_summary(

@@ -528,6 +528,21 @@ function bp_fetch_leave_balances(string $staffName, string $staffUniqueId = '', 
         return [];
     }
 
+    // Primary source of truth: proxy to the web ERP's own get_balance action.
+    // After the leave-policy migration the exact balance computation lives in
+    // the web's leave_employee_balance_rows(), which the mobile backend cannot
+    // see. Calling it server-to-server reuses the identical policy logic and
+    // permissions instead of re-implementing (and drifting from) it.
+    if ($employeeId !== '') {
+        $proxied = bp_fetch_leave_balances_from_web($employeeId);
+        if (!empty($proxied)) {
+            usort($proxied, static function (array $a, array $b): int {
+                return strcasecmp($a['leave_type'], $b['leave_type']);
+            });
+            return $proxied;
+        }
+    }
+
     $viewColumns = bp_table_columns('vw_leave_balance');
     $queries = [];
     if ($staffUniqueId !== '' && isset($viewColumns['staff_unique_id'])) {
@@ -564,9 +579,142 @@ function bp_fetch_leave_balances(string $staffName, string $staffUniqueId = '', 
         ];
     }
 
+    // Fallback: the leave-policy migration moves balances out of
+    // vw_leave_balance into the policy-driven `leave_balance` table keyed by
+    // employee_id / staff_unique_id. When the legacy view returns nothing,
+    // read entitlements there (balance = pl_balance - pl_taken).
+    if (empty($out)) {
+        $out = bp_fetch_leave_balances_from_policy_table($staffUniqueId, $employeeId);
+    }
+
     usort($out, static function (array $a, array $b): int {
         return strcasecmp($a['leave_type'], $b['leave_type']);
     });
+    return $out;
+}
+
+function bp_fetch_leave_balances_from_web(string $employeeId): array
+{
+    $employeeId = trim($employeeId);
+    if ($employeeId === '' || !defined('BP_LEGACY_WEB_BASE_URL')) {
+        return [];
+    }
+
+    $url = BP_LEGACY_WEB_BASE_URL . '/folders/leave_entry/crud.php';
+    $response = bp_http_post_form($url, [
+        'action' => 'get_balance',
+        'employee_id' => $employeeId,
+    ]);
+
+    $json = is_array($response['json'] ?? null) ? $response['json'] : null;
+    if ($json === null && !empty($response['body'])) {
+        $decoded = json_decode((string)$response['body'], true);
+        $json = is_array($decoded) ? $decoded : null;
+    }
+    if ($json === null || empty($json['status']) || !is_array($json['data'] ?? null)) {
+        return [];
+    }
+
+    $out = [];
+    foreach ($json['data'] as $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+        // Map defensively: the web row may label fields differently.
+        $leaveType = (string)($row['leave_type'] ?? $row['leave_type_name'] ?? '');
+        $leaveTypeId = (string)(
+            $row['leave_master_id']
+            ?? $row['leave_master_unique_id']
+            ?? $row['leave_type_id']
+            ?? ''
+        );
+        $balance = $row['balance'] ?? $row['available'] ?? $row['available_balance'] ?? null;
+        $used = $row['used'] ?? $row['used_leave'] ?? $row['pl_taken'] ?? $row['taken'] ?? 0;
+        $entitlement = $row['entitlement'] ?? $row['pl_balance'] ?? $row['annual_days'] ?? null;
+
+        if ($balance === null && $entitlement !== null) {
+            $balance = (float)$entitlement - (float)$used;
+        }
+
+        if ($leaveType === '' && $leaveTypeId === '') {
+            continue;
+        }
+
+        $out[] = [
+            'leave_type' => $leaveType,
+            'leave_type_id' => $leaveTypeId,
+            'used' => (float)$used,
+            'balance' => (float)($balance ?? 0),
+        ];
+    }
+
+    return $out;
+}
+
+function bp_fetch_leave_balances_from_policy_table(
+    string $staffUniqueId,
+    string $employeeId
+): array {
+    $staffUniqueId = trim($staffUniqueId);
+    $employeeId = trim($employeeId);
+    if ($staffUniqueId === '' && $employeeId === '') {
+        return [];
+    }
+
+    $columns = bp_table_columns('leave_balance');
+    if (empty($columns)) {
+        return [];
+    }
+
+    // Prefer employee_id; fall back to staff_unique_id depending on what the
+    // table actually exposes.
+    $clauses = [];
+    if ($employeeId !== '' && isset($columns['employee_id'])) {
+        $clauses[] = 'employee_id = ' . bp_sql_quote($employeeId);
+    }
+    if ($staffUniqueId !== '' && isset($columns['staff_unique_id'])) {
+        $clauses[] = 'staff_unique_id = ' . bp_sql_quote($staffUniqueId);
+    }
+    if (empty($clauses)) {
+        return [];
+    }
+
+    $selectColumns = array_values(array_filter(
+        [
+            'leave_type',
+            'leave_master_unique_id',
+            'pl_balance',
+            'pl_taken',
+            'cl_taken',
+        ],
+        static fn($column) => isset($columns[$column])
+    ));
+    if (empty($selectColumns)) {
+        return [];
+    }
+
+    $whereSuffix = isset($columns['is_delete']) ? ' AND is_delete = 0' : '';
+
+    $rows = [];
+    foreach ($clauses as $clause) {
+        $rows = bp_fetch_rows('leave_balance', $selectColumns, $clause . $whereSuffix);
+        if (!empty($rows)) {
+            break;
+        }
+    }
+
+    $out = [];
+    foreach ($rows as $row) {
+        $entitlement = (float)($row['pl_balance'] ?? 0);
+        $used = (float)($row['pl_taken'] ?? 0);
+        $out[] = [
+            'leave_type' => (string)($row['leave_type'] ?? ''),
+            'leave_type_id' => (string)($row['leave_master_unique_id'] ?? ''),
+            'used' => $used,
+            'balance' => max(0.0, $entitlement - $used),
+        ];
+    }
+
     return $out;
 }
 

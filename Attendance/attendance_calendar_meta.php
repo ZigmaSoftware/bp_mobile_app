@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/attendance_helpers.php';
+require_once __DIR__ . '/../WorkFromHome/wfh_helpers.php';
 
 $input = bp_input();
 $staffIdInput = bp_str($input, 'staff_unique_id', bp_str($input, 'employee_id'));
@@ -98,6 +99,30 @@ foreach ($attendanceItems as $item) {
         'submittedAt' => (string)($item['approval_records'] ?? ''),
         'perm_id' => (string)($item['approval_id'] ?? ''),
     ];
+}
+
+if ($employeeId !== '' && !empty(bp_table_columns(BP_WFH_TABLE))) {
+    $wfhWhere = 'employee_id = ' . bp_sql_quote($employeeId)
+        . ' AND date >= ' . bp_sql_quote($fromDate)
+        . ' AND date <= ' . bp_sql_quote($toDate)
+        . ' AND status = 1 AND is_delete = 0';
+    foreach (bp_wfh_fetch_rows_by_where($wfhWhere) as $entry) {
+        $date = bp_date_ymd((string)($entry['date'] ?? ''));
+        if ($date === null) {
+            continue;
+        }
+
+        $tickets[] = [
+            'kind' => 'wfh',
+            'date' => $date,
+            'type' => 'Work From Home',
+            'status' => (string)($entry['status_label'] ?? 'Approved'),
+            'reason' => (string)($entry['remarks'] ?? ''),
+            'time' => '',
+            'submittedAt' => (string)($entry['created'] ?? ''),
+            'wfh_id' => (string)($entry['unique_id'] ?? ''),
+        ];
+    }
 }
 
 bp_send_json([

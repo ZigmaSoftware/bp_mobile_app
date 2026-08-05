@@ -196,6 +196,498 @@ function bp_att_scope_allows_employee_local(array $scope, string $employeeId): b
     return in_array($employeeId, $employeeIds, true);
 }
 
+/**
+ * ─── Visibility-scope engine ─────────────────────────────────────────────
+ *
+ * Ports the web ERP's build_employee_condition() (blue_planet_erp
+ * folders/monthly_attendance_report_new/function.php) into the session-less
+ * mobile backend. The web scope engine functions (attendance_resolve_scope /
+ * attendance_is_hr_admin) were never implemented in comfun.php, so every
+ * non-HR user previously collapsed to a "self" scope and was denied the
+ * report. These helpers reproduce the web team's authoritative rules:
+ *   full access → user_type UUID (admin/hr) + Developer / Kapil Mehra
+ *   department head → dept employees + recursive reportees
+ *   reporting officer → recursive reportee tree
+ *   plant in-charge → employees at the viewer's work_location(s)
+ */
+
+/**
+ * Trim + de-duplicate ids, preserving case so they match
+ * staff_test.employee_id / vw_attendance_with_shift.employee_id exactly
+ * (mirrors the web report's mar_normalize_id_list()).
+ */
+function bp_att_scope_id_list($values): array
+{
+    $values = is_array($values) ? $values : [$values];
+    $normalized = [];
+    foreach ($values as $value) {
+        $value = trim((string)$value);
+        if ($value === '') {
+            continue;
+        }
+        $normalized[$value] = true;
+    }
+
+    return array_keys($normalized);
+}
+
+function bp_att_scope_in_list(array $values): string
+{
+    $values = bp_att_scope_id_list($values);
+    if (empty($values)) {
+        return "('')";
+    }
+
+    return '(' . implode(', ', array_map('bp_sql_quote', $values)) . ')';
+}
+
+/**
+ * Full-access check, identical to the web report's build_employee_condition():
+ * authoritative user_type UUIDs (admin/hr) plus the Developer / Kapil Mehra
+ * special cases. The UUIDs come from the ERP comfun.php globals when loaded,
+ * falling back to the same hard-coded values the web uses.
+ */
+function bp_att_is_full_access_user(
+    string $userTypeId,
+    string $designationName,
+    string $userName,
+    string $staffName,
+    string $employeeId
+): bool {
+    global $admin_user_type, $hr_user_type;
+
+    $adminType = (isset($admin_user_type) && is_string($admin_user_type) && $admin_user_type !== '')
+        ? $admin_user_type
+        : '5f97fc3257f2525529';
+    $hrType = (isset($hr_user_type) && is_string($hr_user_type) && $hr_user_type !== '')
+        ? $hr_user_type
+        : '5ff71f5fb5ca556748';
+
+    $userTypeId = trim($userTypeId);
+    if ($userTypeId !== '' && ($userTypeId === $adminType || $userTypeId === $hrType)) {
+        return true;
+    }
+
+    if (strcasecmp(trim($designationName), 'Developer') === 0) {
+        return true;
+    }
+    if (strcasecmp(trim($userName), 'Developer') === 0) {
+        return true;
+    }
+    if (strcasecmp(trim($staffName), 'Kapil Mehra') === 0) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Full downward reporting tree (reportees of reportees), walking
+ * staff_test.reporting_officer breadth-first. Mirrors the web report's
+ * mar_get_recursive_reportee_ids(); the visited-set guarantees termination
+ * even if the reporting chain contains a cycle.
+ */
+function bp_att_recursive_reportee_ids(array $seedIds): array
+{
+    $queue = bp_att_scope_id_list($seedIds);
+    $visited = [];
+
+    while (!empty($queue)) {
+        $chunk = array_slice($queue, 0, 50);
+        $queue = array_slice($queue, 50);
+
+        $rows = bp_fetch_rows(
+            'staff_test',
+            ['employee_id'],
+            'is_active = 1 AND is_delete = 0 AND reporting_officer IN ' . bp_att_scope_in_list($chunk)
+        );
+
+        foreach ($rows as $row) {
+            $empId = trim((string)($row['employee_id'] ?? ''));
+            if ($empId === '' || isset($visited[$empId])) {
+                continue;
+            }
+            $visited[$empId] = true;
+            $queue[] = $empId;
+        }
+    }
+
+    return array_keys($visited);
+}
+
+/** department_creation unique_ids headed by $empId (mar_get_department_ids_headed_by_emp). */
+function bp_att_department_ids_headed_by(string $empId): array
+{
+    $empId = trim($empId);
+    if ($empId === '') {
+        return [];
+    }
+
+    $rows = bp_fetch_rows(
+        'department_creation',
+        ['unique_id'],
+        'is_active = 1 AND is_delete = 0 AND department_head = ' . bp_sql_quote($empId)
+    );
+
+    $ids = [];
+    foreach ($rows as $row) {
+        $id = trim((string)($row['unique_id'] ?? ''));
+        if ($id !== '') {
+            $ids[] = $id;
+        }
+    }
+
+    return bp_att_scope_id_list($ids);
+}
+
+/** Employee ids in the given departments (mar_get_employees_in_departments). */
+function bp_att_employees_in_departments(array $deptIds): array
+{
+    $deptIds = bp_att_scope_id_list($deptIds);
+    if (empty($deptIds)) {
+        return [];
+    }
+
+    $rows = bp_fetch_rows(
+        'staff_test',
+        ['employee_id'],
+        'is_active = 1 AND is_delete = 0 AND department IN ' . bp_att_scope_in_list($deptIds)
+    );
+
+    $ids = [];
+    foreach ($rows as $row) {
+        $id = trim((string)($row['employee_id'] ?? ''));
+        if ($id !== '') {
+            $ids[] = $id;
+        }
+    }
+
+    return bp_att_scope_id_list($ids);
+}
+
+/** Department-head scope: dept employees + recursive reportees (mar_get_department_head_scope_ids). */
+function bp_att_department_head_scope_ids(string $empId): array
+{
+    $empId = trim($empId);
+    if ($empId === '') {
+        return [];
+    }
+
+    $deptIds = bp_att_department_ids_headed_by($empId);
+    if (empty($deptIds)) {
+        return [$empId];
+    }
+
+    $employeeIds = bp_att_employees_in_departments($deptIds);
+    $employeeIds = array_merge([$empId], $employeeIds, bp_att_recursive_reportee_ids($employeeIds));
+
+    return bp_att_scope_id_list($employeeIds);
+}
+
+/** Employees at the viewer's work_location(s) (mar_get_plant_scope_ids). */
+function bp_att_plant_scope_ids(string $workLocationCsv): array
+{
+    $workLocationCsv = trim($workLocationCsv);
+    if ($workLocationCsv === '' || strtolower($workLocationCsv) === 'all') {
+        return [];
+    }
+
+    $locations = bp_att_scope_id_list(explode(',', $workLocationCsv));
+    if (empty($locations)) {
+        return [];
+    }
+
+    $rows = bp_fetch_rows(
+        'staff_test',
+        ['employee_id'],
+        'is_active = 1 AND is_delete = 0 AND work_location IN ' . bp_att_scope_in_list($locations)
+    );
+
+    $ids = [];
+    foreach ($rows as $row) {
+        $id = trim((string)($row['employee_id'] ?? ''));
+        if ($id !== '') {
+            $ids[] = $id;
+        }
+    }
+
+    return bp_att_scope_id_list($ids);
+}
+
+/**
+ * Resolve a non-HR user's visibility scope, mirroring build_employee_condition().
+ * Returns the mobile scope shape ('scope_type' + 'employee_ids'); a user who can
+ * only see themselves stays 'self' (the report endpoint intentionally 403s that).
+ */
+function bp_att_resolve_scope_native(string $employeeId, string $workLocationCsv, array $roleTokens): array
+{
+    $employeeId = trim($employeeId);
+    $selfScope = [
+        'scope_type' => 'self',
+        'employee_ids' => $employeeId !== '' ? [$employeeId] : [],
+        'project_ids' => [],
+        'department_filter' => null,
+        'self_employee_id' => $employeeId,
+    ];
+    if ($employeeId === '') {
+        return $selfScope;
+    }
+
+    // Ops-exec special case (build_employee_condition uses XWM107 -> BPIW0015).
+    if (strcasecmp($employeeId, 'XWM107') === 0) {
+        $opsIds = bp_att_scope_id_list(bp_att_department_head_scope_ids('BPIW0015'));
+        if (count($opsIds) > 1) {
+            return [
+                'scope_type' => 'department',
+                'employee_ids' => $opsIds,
+                'project_ids' => [],
+                'department_filter' => null,
+                'self_employee_id' => $employeeId,
+            ];
+        }
+    }
+
+    $allowed = [$employeeId];
+    $scopeType = 'self';
+
+    // Department head: whole department + recursive reportees.
+    if (!empty(bp_att_department_ids_headed_by($employeeId))) {
+        $allowed = array_merge($allowed, bp_att_department_head_scope_ids($employeeId));
+        $scopeType = 'department';
+    }
+
+    // Reporting officer: full recursive reportee tree.
+    if (bp_is_reporting_officer($employeeId)) {
+        $allowed = array_merge($allowed, bp_att_recursive_reportee_ids([$employeeId]));
+        if ($scopeType === 'self') {
+            $scopeType = 'team';
+        }
+    }
+
+    // Plant in-charge: everyone at the viewer's work_location(s).
+    $roleText = strtolower(trim(implode(' ', array_map('strval', $roleTokens))));
+    if (preg_match('/plant in[- ]?charge/i', $roleText) === 1) {
+        $plantIds = bp_att_plant_scope_ids($workLocationCsv);
+        if (!empty($plantIds)) {
+            $allowed = array_merge($allowed, $plantIds);
+            if ($scopeType === 'self') {
+                $scopeType = 'plant';
+            }
+        }
+    }
+
+    $allowed = bp_att_scope_id_list($allowed);
+    if (count($allowed) <= 1) {
+        return $selfScope;
+    }
+
+    return [
+        'scope_type' => $scopeType,
+        'employee_ids' => $allowed,
+        'project_ids' => [],
+        'department_filter' => null,
+        'self_employee_id' => $employeeId,
+    ];
+}
+
+/**
+ * ─── Attendance-report web parity ────────────────────────────────────────
+ *
+ * The monthly_attendance_report_new web screen classifies each row with four
+ * EXACT status lists (crud.php) + a dynamic leave_master_creation lookup, and
+ * applies a BP head-office / non-head-office work_location partition
+ * (build_project_scope_sql) plus an optional project (work_location) filter on
+ * every query. These helpers reproduce that exactly so the mobile report
+ * returns the same data as the web for the same user + filters.
+ */
+
+function bp_att_report_present_statuses(): array
+{
+    // crud.php $PRESENT_STATUSES
+    return ['present', 'late in', 'early exit', 'half day'];
+}
+
+function bp_att_report_absent_statuses(): array
+{
+    // crud.php absent_condition (note: 'Missed In' is NOT absent on the web)
+    return ['absent', 'missed out', 'absent - no shift assigned'];
+}
+
+function bp_att_report_weekoff_statuses(): array
+{
+    // crud.php $WEEKOFF_HOLIDAY_STATUSES
+    return ['week off', 'holiday'];
+}
+
+/**
+ * Classify a status into exactly one report bucket, or null when it belongs to
+ * none (Permission, Missed In, Short Hours, blank …). Mirrors the web's four
+ * independent status queries — anything unmatched is not counted anywhere.
+ */
+function bp_att_report_exact_bucket(string $status): ?string
+{
+    $normalized = bp_normalize_attendance_status($status);
+    if ($normalized === '') {
+        return null;
+    }
+
+    if (in_array($normalized, bp_att_report_present_statuses(), true)) {
+        return 'present';
+    }
+    if (in_array($normalized, bp_att_report_absent_statuses(), true)) {
+        return 'absent';
+    }
+    if (in_array($normalized, bp_att_report_weekoff_statuses(), true)) {
+        return 'weekoff_holiday';
+    }
+
+    // Leave = membership in leave_master_creation.leave_type (dynamic).
+    $leaveStatuses = bp_dynamic_leave_statuses();
+    if (isset($leaveStatuses[$normalized])) {
+        return 'leave';
+    }
+
+    return null;
+}
+
+/** Viewer work_location list (CSV), mirroring current_user_work_locations(). */
+function bp_att_viewer_work_locations(array $context): array
+{
+    $work = trim((string)(
+        ($context['session']['work_location'] ?? '') !== ''
+            ? $context['session']['work_location']
+            : ($context['user']['work_location'] ?? '')
+    ));
+    if ($work === '' || strtolower($work) === 'all') {
+        return [];
+    }
+
+    return array_values(array_filter(array_map('trim', explode(',', $work)), static fn($v) => $v !== ''));
+}
+
+/**
+ * BP head-office / non-head-office partition on the work_location column,
+ * mirroring build_project_scope_sql(). Kapil (BPIN0082) is not partitioned;
+ * a head-office user sees only HO staff; everyone else sees only non-HO staff.
+ */
+function bp_att_ho_partition_clause(array $context, string $workLocationCol): string
+{
+    $workLocationCol = trim($workLocationCol);
+    if ($workLocationCol === '') {
+        return '';
+    }
+
+    $employeeId = trim((string)($context['employee_id'] ?? ''));
+    if (strcasecmp($employeeId, 'BPIN0082') === 0) {
+        return '';
+    }
+
+    $hoId = bp_att_head_office_project_id();
+    $quotedHo = bp_sql_quote($hoId);
+    $isHoUser = in_array($hoId, bp_att_viewer_work_locations($context), true);
+
+    if ($isHoUser) {
+        return ' AND (' . $workLocationCol . ' = ' . $quotedHo
+            . ' OR FIND_IN_SET(' . $quotedHo . ', ' . $workLocationCol . ') > 0)';
+    }
+
+    return ' AND (' . $workLocationCol . ' != ' . $quotedHo
+        . ' AND NOT FIND_IN_SET(' . $quotedHo . ', ' . $workLocationCol . ') > 0)';
+}
+
+/** Optional project (work_location) filter from the dropdown; '' / 'all' = no filter. */
+function bp_att_report_project_clause(string $projectCsv, string $workLocationCol): string
+{
+    $workLocationCol = trim($workLocationCol);
+    $projectCsv = trim($projectCsv);
+    if ($workLocationCol === '' || $projectCsv === '' || strtolower($projectCsv) === 'all') {
+        return '';
+    }
+
+    $ids = bp_att_scope_id_list(explode(',', $projectCsv));
+    if (empty($ids)) {
+        return '';
+    }
+
+    return ' AND ' . $workLocationCol . ' IN ' . bp_att_scope_in_list($ids);
+}
+
+/**
+ * Per-user scoped project list for the report dropdown, mirroring
+ * get_project_name(): Kapil → all; HO user → only the HO project; everyone
+ * else → non-HO projects limited to their session work_location list.
+ */
+function bp_att_scoped_project_list(array $context): array
+{
+    $projectColumns = bp_att_table_columns('project_creation');
+    if (empty($projectColumns) || !isset($projectColumns['unique_id'])) {
+        return ['all_allowed' => false, 'projects' => []];
+    }
+
+    $select = array_values(array_filter(
+        ['unique_id', 'project_name', 'project_code'],
+        static fn($c) => isset($projectColumns[$c])
+    ));
+
+    try {
+        $rows = bp_fetch_rows('project_creation', $select, 'is_active = 1 AND is_delete = 0');
+    } catch (Throwable $e) {
+        error_log('bp_mobile_app scoped project list failed: ' . bp_att_error_text($e));
+        return ['all_allowed' => false, 'projects' => []];
+    }
+
+    $employeeId = trim((string)($context['employee_id'] ?? ''));
+    $isKapil = strcasecmp($employeeId, 'BPIN0082') === 0;
+    $hoId = bp_att_head_office_project_id();
+
+    $workRaw = trim((string)(
+        ($context['session']['work_location'] ?? '') !== ''
+            ? $context['session']['work_location']
+            : ($context['user']['work_location'] ?? '')
+    ));
+    $isAll = strtolower($workRaw) === 'all';
+    $locations = bp_att_viewer_work_locations($context);
+    $isHoUser = in_array($hoId, $locations, true);
+
+    $projects = [];
+    foreach ($rows as $row) {
+        $id = trim((string)($row['unique_id'] ?? ''));
+        if ($id === '') {
+            continue;
+        }
+
+        if ($isKapil) {
+            // sees everything
+        } elseif ($isHoUser) {
+            if ($id !== $hoId) {
+                continue;
+            }
+        } else {
+            if ($id === $hoId) {
+                continue;
+            }
+            if (!$isAll && !empty($locations) && !in_array($id, $locations, true)) {
+                continue;
+            }
+        }
+
+        $name = trim((string)($row['project_name'] ?? ''));
+        if ($name === '') {
+            $name = trim((string)($row['project_code'] ?? ''));
+        }
+        $projects[] = [
+            'id' => $id,
+            'name' => $name !== '' ? $name : $id,
+            'code' => trim((string)($row['project_code'] ?? '')),
+        ];
+    }
+
+    usort($projects, static fn($a, $b) => strcasecmp((string)$a['name'], (string)$b['name']));
+
+    // list.php offers "All Project" only when the session work_location is 'all'.
+    return ['all_allowed' => $isKapil || $isAll, 'projects' => $projects];
+}
+
 function bp_att_staff_join_meta(): array
 {
     $columns = bp_att_table_columns('staff_test');
@@ -565,15 +1057,15 @@ function bp_att_context(string $staffIdentifier): ?array
         'designation_type' => $designationName,
     ];
 
-    $isHrUser = bp_att_role_indicates_hr([
+    // Full access (see everyone) matches the web report's authority check:
+    // authoritative user_type UUID (admin/hr) + Developer / Kapil Mehra.
+    $isHrUser = bp_att_is_full_access_user(
+        $userTypeId,
         $designationName,
-        $userTypeName,
-        $departmentName,
-        $session['designation_type'] ?? '',
-    ]);
-    if (!$isHrUser && function_exists('attendance_is_hr_admin')) {
-        $isHrUser = (bool)attendance_is_hr_admin($userTypeId, $designationName, $employeeId);
-    }
+        (string)($userRow['user_name'] ?? ''),
+        (string)($staff['staff_name'] ?? ''),
+        $employeeId
+    );
     $isReportingOfficer = function_exists('bp_is_reporting_officer')
         ? bp_is_reporting_officer($employeeId)
         : false;
@@ -587,15 +1079,14 @@ function bp_att_context(string $staffIdentifier): ?array
             'self_employee_id' => $employeeId,
         ];
     } else {
-        $scope = function_exists('attendance_resolve_scope')
-            ? attendance_resolve_scope($session)
-            : [
-                'scope_type' => 'self',
-                'employee_ids' => [$employeeId],
-                'project_ids' => [],
-                'department_filter' => null,
-                'self_employee_id' => $employeeId,
-            ];
+        // Non-HR users: resolve visibility exactly like the web report's
+        // build_employee_condition() — self + recursive reportees (reporting
+        // officers) + department-head scope + plant-in-charge scope.
+        $scope = bp_att_resolve_scope_native(
+            $employeeId,
+            (string)($session['work_location'] ?? ''),
+            [$designationName, $userTypeName, (string)($session['designation_type'] ?? '')]
+        );
     }
 
     $roleLabel = '';
@@ -1616,6 +2107,18 @@ function bp_att_blueplanet_table_columns(string $table): array
     return $cache[$table];
 }
 
+function bp_att_recognized_table_name(): string
+{
+    // Live manual attendance and direct punch both write accepted punches here.
+    return 'zigfly_recognized';
+}
+
+function bp_att_central_recognized_table_name(): string
+{
+    // Face-recognition API writes here before the ERP sync job may copy rows.
+    return 'recognized';
+}
+
 function bp_att_employee_media_tables(): array
 {
     $resolved = [];
@@ -2115,6 +2618,72 @@ function bp_att_index_employee_approvals_by_date(string $employeeId, ?string $fr
     return $indexed;
 }
 
+/**
+ * Groups every att_approval recognition row per date into a first (check-in)
+ * and last (check-out) punch, carrying the latitude/longitude/captured image.
+ *
+ * vw_attendance_with_shift exposes the punch *time* but not the geo/photo for
+ * face & direct punches — that data lives in att_approval. This lets the
+ * attendance detail screen show the map + punch photo.
+ *
+ * Returns: [ 'YYYY-MM-DD' => ['in' => row|null, 'out' => row|null] ]
+ */
+function bp_att_index_employee_punches_by_date(string $employeeId, ?string $fromDate = null, ?string $toDate = null, int $limit = 400): array
+{
+    $history = bp_att_fetch_employee_history($employeeId, $fromDate, $toDate, null, $limit);
+
+    // Collect all rows per date with a sortable timestamp.
+    $byDate = [];
+    foreach ($history as $item) {
+        $dateKey = bp_date_ymd((string)($item['recognition_date'] ?? ''));
+        if ($dateKey === null) {
+            $recordValue = trim((string)($item['records'] ?? ''));
+            if ($recordValue !== '') {
+                $dateKey = bp_date_ymd(substr(str_replace('T', ' ', $recordValue), 0, 10));
+            }
+        }
+        if ($dateKey === null) {
+            continue;
+        }
+
+        $time = trim((string)($item['recognition_time'] ?? ''));
+        $sortKey = $dateKey . ' ' . ($time !== '' ? $time : '00:00:00');
+        $byDate[$dateKey][] = ['sort' => $sortKey, 'row' => $item];
+    }
+
+    $indexed = [];
+    foreach ($byDate as $dateKey => $entries) {
+        usort($entries, static function (array $a, array $b): int {
+            return strcmp((string)$a['sort'], (string)$b['sort']);
+        });
+        $first = $entries[0]['row'] ?? null;
+        $last = $entries[count($entries) - 1]['row'] ?? null;
+        // With a single punch in the day, treat it as the check-in only.
+        $indexed[$dateKey] = [
+            'in' => $first,
+            'out' => count($entries) > 1 ? $last : null,
+        ];
+    }
+
+    return $indexed;
+}
+
+/**
+ * Returns a usable image path/url from an att_approval row, or '' when the
+ * punch carried no photo (e.g. direct punches store 'direct_punch').
+ */
+function bp_att_punch_image_path(?array $row): string
+{
+    if (!is_array($row)) {
+        return '';
+    }
+    $path = trim((string)($row['captured_image_path'] ?? ''));
+    if ($path === '' || strtolower($path) === 'direct_punch') {
+        return '';
+    }
+    return $path;
+}
+
 function bp_att_fetch_actual_attendance_records(
     string $employeeId,
     ?string $fromDate = null,
@@ -2200,11 +2769,40 @@ function bp_att_fetch_actual_attendance_records(
         ? bp_att_index_employee_approvals_by_date($employeeId, $fromDate, $toDate)
         : [];
 
+    // Geo + photo for punches come from att_approval, not the shift view.
+    $punchByDate = $employeeId !== ''
+        ? bp_att_index_employee_punches_by_date($employeeId, $fromDate, $toDate)
+        : [];
+    $recognizedByDate = $employeeId !== ''
+        ? bp_att_fetch_recognized_records_by_date($employeeId, $fromDate, $toDate)
+        : [];
+
     $items = [];
     foreach ($rowsByDate as $shiftDate => $row) {
         $raw = is_array($row['_raw'] ?? null) ? $row['_raw'] : [];
         $statusRaw = trim((string)($row['attendance_status'] ?? ''));
         $approval = is_array($approvalByDate[$shiftDate] ?? null) ? $approvalByDate[$shiftDate] : null;
+        $punch = is_array($punchByDate[$shiftDate] ?? null) ? $punchByDate[$shiftDate] : null;
+        $recognized = is_array($recognizedByDate[$shiftDate] ?? null) ? $recognizedByDate[$shiftDate] : null;
+        $inPunch = is_array($punch['in'] ?? null) ? $punch['in'] : null;
+        $outPunch = is_array($punch['out'] ?? null) ? $punch['out'] : null;
+        $recognizedIn = is_array($recognized) ? $recognized : [];
+
+        // Prefer the shift view's value; fall back to the att_approval punch
+        // (which is where face/direct-punch geo + photo actually live).
+        $viewInLat = bp_att_attendance_view_value($raw, $columnMap['in_latitude'] ?? null);
+        $viewInLng = bp_att_attendance_view_value($raw, $columnMap['in_longitude'] ?? null);
+        $viewInImg = bp_att_attendance_view_value($raw, $columnMap['in_image_path'] ?? null);
+        $viewOutLat = bp_att_attendance_view_value($raw, $columnMap['out_latitude'] ?? null);
+        $viewOutLng = bp_att_attendance_view_value($raw, $columnMap['out_longitude'] ?? null);
+        $viewOutImg = bp_att_attendance_view_value($raw, $columnMap['out_image_path'] ?? null);
+
+        $inLat = trim((string)$viewInLat) !== '' ? $viewInLat : trim((string)($recognizedIn['in_latitude'] ?? ($inPunch['latitude'] ?? '')));
+        $inLng = trim((string)$viewInLng) !== '' ? $viewInLng : trim((string)($recognizedIn['in_longitude'] ?? ($inPunch['longitude'] ?? '')));
+        $inImg = trim((string)$viewInImg) !== '' ? $viewInImg : (trim((string)($recognizedIn['in_image_path'] ?? '')) !== '' ? (string)$recognizedIn['in_image_path'] : bp_att_punch_image_path($inPunch));
+        $outLat = trim((string)$viewOutLat) !== '' ? $viewOutLat : trim((string)($recognizedIn['out_latitude'] ?? ($outPunch['latitude'] ?? '')));
+        $outLng = trim((string)$viewOutLng) !== '' ? $viewOutLng : trim((string)($recognizedIn['out_longitude'] ?? ($outPunch['longitude'] ?? '')));
+        $outImg = trim((string)$viewOutImg) !== '' ? $viewOutImg : (trim((string)($recognizedIn['out_image_path'] ?? '')) !== '' ? (string)$recognizedIn['out_image_path'] : bp_att_punch_image_path($outPunch));
 
         $items[$shiftDate] = [
             'date' => $shiftDate,
@@ -2221,12 +2819,12 @@ function bp_att_fetch_actual_attendance_records(
             'out_time' => bp_att_attendance_time_only((string)($row['exit_punch'] ?? '')),
             'total_worked_time' => trim((string)($row['worked_hours'] ?? '')),
             'shift_hours' => bp_att_attendance_view_value($raw, $columnMap['shift_hours'] ?? null),
-            'in_latitude' => bp_att_attendance_view_value($raw, $columnMap['in_latitude'] ?? null),
-            'in_longitude' => bp_att_attendance_view_value($raw, $columnMap['in_longitude'] ?? null),
-            'in_image_path' => bp_att_attendance_view_value($raw, $columnMap['in_image_path'] ?? null),
-            'out_latitude' => bp_att_attendance_view_value($raw, $columnMap['out_latitude'] ?? null),
-            'out_longitude' => bp_att_attendance_view_value($raw, $columnMap['out_longitude'] ?? null),
-            'out_image_path' => bp_att_attendance_view_value($raw, $columnMap['out_image_path'] ?? null),
+            'in_latitude' => $inLat,
+            'in_longitude' => $inLng,
+            'in_image_path' => $inImg,
+            'out_latitude' => $outLat,
+            'out_longitude' => $outLng,
+            'out_image_path' => $outImg,
             'in_site_name' => bp_att_attendance_view_value($raw, $columnMap['in_site_name'] ?? null),
             'out_site_name' => bp_att_attendance_view_value($raw, $columnMap['out_site_name'] ?? null),
             'approval_id' => trim((string)($approval['approval_id'] ?? '')),
@@ -2235,6 +2833,13 @@ function bp_att_fetch_actual_attendance_records(
             'approval_time' => trim((string)($approval['recognition_time'] ?? '')),
             'approval_records' => trim((string)($approval['records'] ?? '')),
         ];
+
+        if ($recognized) {
+            $items[$shiftDate] = bp_att_merge_recognized_attendance_item(
+                $items[$shiftDate],
+                $recognized
+            );
+        }
     }
 
     foreach ($approvalByDate as $shiftDate => $approval) {
@@ -2242,6 +2847,7 @@ function bp_att_fetch_actual_attendance_records(
             continue;
         }
 
+        $isApproved = ((int)($approval['status'] ?? 0)) === 1;
         $items[$shiftDate] = [
             'date' => $shiftDate,
             'legacy_date' => bp_att_attendance_legacy_date($shiftDate),
@@ -2251,15 +2857,15 @@ function bp_att_fetch_actual_attendance_records(
             'attendance_status' => '',
             'status_bucket' => '',
             'day_status' => '',
-            'entry_punch' => '',
+            'entry_punch' => $isApproved ? trim((string)($approval['records'] ?? '')) : '',
             'exit_punch' => '',
-            'in_time' => '',
+            'in_time' => $isApproved ? bp_att_attendance_time_only(trim((string)($approval['records'] ?? ''))) : '',
             'out_time' => '',
             'total_worked_time' => '',
             'shift_hours' => '',
-            'in_latitude' => '',
-            'in_longitude' => '',
-            'in_image_path' => '',
+            'in_latitude' => $isApproved ? trim((string)($approval['latitude'] ?? '')) : '',
+            'in_longitude' => $isApproved ? trim((string)($approval['longitude'] ?? '')) : '',
+            'in_image_path' => $isApproved ? bp_att_punch_image_path($approval) : '',
             'out_latitude' => '',
             'out_longitude' => '',
             'out_image_path' => '',
@@ -2273,8 +2879,384 @@ function bp_att_fetch_actual_attendance_records(
         ];
     }
 
+    foreach ($recognizedByDate as $shiftDate => $recognized) {
+        if (isset($items[$shiftDate])) {
+            continue;
+        }
+
+        $items[$shiftDate] = bp_att_recognized_row_to_attendance_item(
+            $shiftDate,
+            $employeeId,
+            $recognized
+        );
+    }
+
     ksort($items);
     return array_values($items);
+}
+
+function bp_att_fetch_recognized_records_by_date(
+    string $employeeId,
+    ?string $fromDate = null,
+    ?string $toDate = null
+): array {
+    $employeeId = trim($employeeId);
+    if ($employeeId === '') {
+        return [];
+    }
+
+    if ($fromDate === null || bp_date_ymd($fromDate) === null) {
+        $fromDate = date('Y-m-01');
+    }
+    if ($toDate === null || bp_date_ymd($toDate) === null) {
+        $toDate = date('Y-m-t');
+    }
+    if ($fromDate > $toDate) {
+        $tmp = $fromDate;
+        $fromDate = $toDate;
+        $toDate = $tmp;
+    }
+
+    $candidateIds = bp_att_employee_id_candidates($employeeId);
+    if (empty($candidateIds)) {
+        return [];
+    }
+
+    $rows = [];
+    $localTable = bp_att_recognized_table_name();
+    $localColumns = bp_att_table_columns($localTable);
+    $hasLocalRequiredColumns = !empty($localColumns);
+    foreach (['emp_id', 'records', 'recognition_date'] as $column) {
+        $hasLocalRequiredColumns = $hasLocalRequiredColumns && isset($localColumns[$column]);
+    }
+
+    if ($hasLocalRequiredColumns) {
+        $selectedColumns = bp_att_recognized_selected_columns($localColumns);
+        if (!empty($selectedColumns)) {
+            $quotedIds = array_map(
+                static fn(string $candidate): string => bp_sql_quote(strtoupper(trim($candidate))),
+                $candidateIds
+            );
+
+            $where = 'UPPER(TRIM(emp_id)) IN (' . implode(',', $quotedIds) . ')'
+                . ' AND recognition_date >= ' . bp_sql_quote($fromDate)
+                . ' AND recognition_date <= ' . bp_sql_quote($toDate)
+                . ' ORDER BY recognition_date ASC, records ASC'
+                . (isset($localColumns['id']) ? ', id ASC' : '');
+
+            $rows = array_merge($rows, bp_fetch_rows($localTable, $selectedColumns, $where));
+        }
+    }
+
+    $rows = array_merge(
+        $rows,
+        bp_att_fetch_central_recognized_rows($candidateIds, $fromDate, $toDate)
+    );
+    if (empty($rows)) {
+        return [];
+    }
+
+    $dedupedRows = [];
+    foreach ($rows as $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+
+        $records = trim((string)($row['records'] ?? ''));
+        $rowEmployee = strtoupper(trim((string)($row['emp_id'] ?? $employeeId)));
+        $key = $rowEmployee . '|' . $records;
+        if ($records === '') {
+            $key .= '|' . trim((string)($row['recognition_date'] ?? ''))
+                . '|' . trim((string)($row['recognition_time'] ?? ''))
+                . '|' . trim((string)($row['id'] ?? ''));
+        }
+        if (!isset($dedupedRows[$key])) {
+            $dedupedRows[$key] = $row;
+        }
+    }
+
+    $rows = array_values($dedupedRows);
+    usort($rows, static function (array $a, array $b): int {
+        $left = trim((string)($a['recognition_date'] ?? '')) . ' ' . trim((string)($a['records'] ?? ''));
+        $right = trim((string)($b['recognition_date'] ?? '')) . ' ' . trim((string)($b['records'] ?? ''));
+        return strcmp($left, $right);
+    });
+
+    $items = [];
+    foreach ($rows as $row) {
+        if (!is_array($row)) {
+            continue;
+        }
+
+        $shiftDate = bp_date_ymd((string)($row['recognition_date'] ?? ''));
+        if ($shiftDate === null) {
+            $shiftDate = bp_date_ymd((string)($row['records'] ?? ''));
+        }
+        if ($shiftDate === null) {
+            continue;
+        }
+
+        $records = trim((string)($row['records'] ?? ''));
+        $timeOnly = bp_att_attendance_time_only($records);
+        if ($timeOnly === '') {
+            $timeOnly = bp_att_attendance_time_only((string)($row['recognition_time'] ?? ''));
+        }
+
+        if (!isset($items[$shiftDate])) {
+            $items[$shiftDate] = [
+                'count' => 0,
+                'staff_name' => trim((string)($row['name'] ?? '')),
+                'entry_punch' => $records,
+                'exit_punch' => '',
+                'in_time' => $timeOnly,
+                'out_time' => '',
+                'in_latitude' => trim((string)($row['latitude'] ?? '')),
+                'in_longitude' => trim((string)($row['longitude'] ?? '')),
+                'in_image_path' => bp_att_punch_image_path($row),
+                'out_latitude' => '',
+                'out_longitude' => '',
+                'out_image_path' => '',
+                'first_records' => $records,
+                'last_records' => $records,
+            ];
+        }
+
+        $items[$shiftDate]['count']++;
+        if (trim((string)($items[$shiftDate]['staff_name'] ?? '')) === '') {
+            $items[$shiftDate]['staff_name'] = trim((string)($row['name'] ?? ''));
+        }
+        $items[$shiftDate]['last_records'] = $records;
+
+        if ((int)($items[$shiftDate]['count'] ?? 0) > 1) {
+            $items[$shiftDate]['exit_punch'] = $records;
+            $items[$shiftDate]['out_time'] = $timeOnly;
+            $items[$shiftDate]['out_latitude'] = trim((string)($row['latitude'] ?? ''));
+            $items[$shiftDate]['out_longitude'] = trim((string)($row['longitude'] ?? ''));
+            $items[$shiftDate]['out_image_path'] = bp_att_punch_image_path($row);
+        }
+    }
+
+    foreach ($items as $shiftDate => $item) {
+        $workedTime = '';
+        if ((int)($item['count'] ?? 0) > 1) {
+            $workedTime = bp_att_worked_time_between(
+                (string)($item['first_records'] ?? ''),
+                (string)($item['last_records'] ?? '')
+            );
+        }
+
+        $items[$shiftDate] = [
+            'date' => $shiftDate,
+            'legacy_date' => bp_att_attendance_legacy_date($shiftDate),
+            'staff_name' => (string)($item['staff_name'] ?? ''),
+            'attendance_status' => 'Present',
+            'status_bucket' => bp_attendance_summary_bucket('Present'),
+            'day_status' => bp_att_attendance_day_status('Present'),
+            'entry_punch' => (string)($item['entry_punch'] ?? ''),
+            'exit_punch' => (string)($item['exit_punch'] ?? ''),
+            'in_time' => (string)($item['in_time'] ?? ''),
+            'out_time' => (string)($item['out_time'] ?? ''),
+            'total_worked_time' => $workedTime,
+            'in_latitude' => (string)($item['in_latitude'] ?? ''),
+            'in_longitude' => (string)($item['in_longitude'] ?? ''),
+            'in_image_path' => (string)($item['in_image_path'] ?? ''),
+            'out_latitude' => (string)($item['out_latitude'] ?? ''),
+            'out_longitude' => (string)($item['out_longitude'] ?? ''),
+            'out_image_path' => (string)($item['out_image_path'] ?? ''),
+            'in_site_name' => '',
+            'out_site_name' => '',
+        ];
+    }
+
+    return $items;
+}
+
+function bp_att_recognized_selected_columns(array $columns): array
+{
+    return array_values(array_filter([
+        'id',
+        'emp_id',
+        'name',
+        'records',
+        'captured_image_path',
+        'similarity_score',
+        'latitude',
+        'longitude',
+        'recognition_date',
+        'recognition_time',
+        'work_location',
+    ], static function (string $column) use ($columns): bool {
+        return isset($columns[$column]);
+    }));
+}
+
+function bp_att_fetch_central_recognized_rows(
+    array $candidateIds,
+    string $fromDate,
+    string $toDate
+): array {
+    $table = bp_att_central_recognized_table_name();
+    $columns = bp_att_blueplanet_table_columns($table);
+    foreach (['emp_id', 'records', 'recognition_date'] as $column) {
+        if (!isset($columns[$column])) {
+            return [];
+        }
+    }
+
+    $pdo = bp_att_blueplanet_pdo();
+    if (!$pdo instanceof PDO) {
+        return [];
+    }
+
+    $selectedColumns = bp_att_recognized_selected_columns($columns);
+    if (empty($selectedColumns)) {
+        return [];
+    }
+
+    $placeholders = [];
+    $params = [
+        ':from_date' => $fromDate,
+        ':to_date' => $toDate,
+    ];
+    foreach ($candidateIds as $index => $candidate) {
+        $placeholder = ':emp_id_' . $index;
+        $placeholders[] = $placeholder;
+        $params[$placeholder] = strtoupper(trim((string)$candidate));
+    }
+    if (empty($placeholders)) {
+        return [];
+    }
+
+    $sql = 'SELECT ' . implode(', ', $selectedColumns)
+        . ' FROM `' . $table . '`'
+        . ' WHERE UPPER(TRIM(emp_id)) IN (' . implode(', ', $placeholders) . ')'
+        . ' AND recognition_date >= :from_date'
+        . ' AND recognition_date <= :to_date'
+        . ' ORDER BY recognition_date ASC, records ASC'
+        . (isset($columns['id']) ? ', id ASC' : '');
+
+    try {
+        $statement = $pdo->prepare($sql);
+        foreach ($params as $placeholder => $value) {
+            $statement->bindValue($placeholder, $value);
+        }
+        $statement->execute();
+        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Throwable $e) {
+        error_log('bp_mobile_app central recognized attendance lookup failed: ' . bp_att_error_text($e));
+        return [];
+    }
+
+    return is_array($rows) ? $rows : [];
+}
+
+function bp_att_worked_time_between(string $start, string $end): string
+{
+    $start = trim($start);
+    $end = trim($end);
+    if ($start === '' || $end === '') {
+        return '';
+    }
+
+    $startTs = strtotime($start);
+    $endTs = strtotime($end);
+    if ($startTs === false || $endTs === false || $endTs <= $startTs) {
+        return '';
+    }
+
+    $seconds = $endTs - $startTs;
+    $hours = (int)floor($seconds / 3600);
+    $minutes = (int)floor(($seconds % 3600) / 60);
+    $remainingSeconds = (int)($seconds % 60);
+
+    return sprintf('%02d:%02d:%02d', $hours, $minutes, $remainingSeconds);
+}
+
+function bp_att_merge_recognized_attendance_item(array $item, array $recognized): array
+{
+    $hasRecognizedPunch = trim((string)($recognized['in_time'] ?? '')) !== ''
+        || trim((string)($recognized['out_time'] ?? '')) !== ''
+        || trim((string)($recognized['entry_punch'] ?? '')) !== ''
+        || trim((string)($recognized['exit_punch'] ?? '')) !== '';
+
+    foreach ([
+        'entry_punch',
+        'exit_punch',
+        'in_time',
+        'out_time',
+        'total_worked_time',
+        'in_latitude',
+        'in_longitude',
+        'in_image_path',
+        'out_latitude',
+        'out_longitude',
+        'out_image_path',
+        'in_site_name',
+        'out_site_name',
+    ] as $field) {
+        if (trim((string)($item[$field] ?? '')) === '') {
+            $item[$field] = (string)($recognized[$field] ?? '');
+        }
+    }
+
+    $status = trim((string)($item['attendance_status'] ?? ''));
+    $useRecognizedStatus = $status === ''
+        || ($hasRecognizedPunch && bp_attendance_is_absent_status($status));
+    if ($useRecognizedStatus) {
+        $item['attendance_status'] = (string)($recognized['attendance_status'] ?? 'Present');
+    }
+
+    $statusBucket = trim((string)($item['status_bucket'] ?? ''));
+    if ($statusBucket === '' || $useRecognizedStatus) {
+        $item['status_bucket'] = (string)($recognized['status_bucket'] ?? bp_attendance_summary_bucket('Present'));
+    }
+
+    $dayStatus = trim((string)($item['day_status'] ?? ''));
+    if ($dayStatus === '' || $useRecognizedStatus || ($hasRecognizedPunch && bp_attendance_is_absent_status($dayStatus))) {
+        $item['day_status'] = (string)($recognized['day_status'] ?? bp_att_attendance_day_status('Present'));
+    }
+
+    if (trim((string)($item['staff_name'] ?? '')) === '') {
+        $item['staff_name'] = (string)($recognized['staff_name'] ?? '');
+    }
+
+    return $item;
+}
+
+function bp_att_recognized_row_to_attendance_item(
+    string $shiftDate,
+    string $employeeId,
+    array $recognized
+): array {
+    return [
+        'date' => $shiftDate,
+        'legacy_date' => bp_att_attendance_legacy_date($shiftDate),
+        'employee_id' => $employeeId,
+        'staff_name' => (string)($recognized['staff_name'] ?? ''),
+        'planned_shift' => '',
+        'attendance_status' => (string)($recognized['attendance_status'] ?? 'Present'),
+        'status_bucket' => (string)($recognized['status_bucket'] ?? ''),
+        'day_status' => (string)($recognized['day_status'] ?? ''),
+        'entry_punch' => (string)($recognized['entry_punch'] ?? ''),
+        'exit_punch' => (string)($recognized['exit_punch'] ?? ''),
+        'in_time' => (string)($recognized['in_time'] ?? ''),
+        'out_time' => (string)($recognized['out_time'] ?? ''),
+        'total_worked_time' => (string)($recognized['total_worked_time'] ?? ''),
+        'shift_hours' => '',
+        'in_latitude' => (string)($recognized['in_latitude'] ?? ''),
+        'in_longitude' => (string)($recognized['in_longitude'] ?? ''),
+        'in_image_path' => (string)($recognized['in_image_path'] ?? ''),
+        'out_latitude' => (string)($recognized['out_latitude'] ?? ''),
+        'out_longitude' => (string)($recognized['out_longitude'] ?? ''),
+        'out_image_path' => (string)($recognized['out_image_path'] ?? ''),
+        'in_site_name' => (string)($recognized['in_site_name'] ?? ''),
+        'out_site_name' => (string)($recognized['out_site_name'] ?? ''),
+        'approval_id' => '',
+        'approval_status' => '',
+        'approval_status_code' => '',
+        'approval_time' => '',
+        'approval_records' => '',
+    ];
 }
 
 function bp_att_fetch_approval_row(string $approvalId): ?array

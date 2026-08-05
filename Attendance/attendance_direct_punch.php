@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/attendance_helpers.php';
+require_once __DIR__ . '/../WorkFromHome/wfh_helpers.php';
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     http_response_code(204);
@@ -77,17 +78,33 @@ try {
         ], 400);
     }
 
+    $context = bp_att_require_context($staffIdInput);
+    $employeeId = trim((string)($context['employee_id'] ?? ''));
+    [$recognitionDate] = bp_att_direct_punch_timestamp($input);
+
+    $isWfhDay = false;
+    if ($employeeId !== '' && $recognitionDate !== '' && !empty(bp_table_columns(BP_WFH_TABLE))) {
+        $isWfhDay = bp_wfh_count(
+            'employee_id = ' . bp_sql_quote($employeeId)
+            . ' AND date = ' . bp_sql_quote($recognitionDate)
+            . ' AND status = 1 AND is_delete = 0'
+        ) > 0;
+    }
+
     $latitude = bp_att_float_or_null(bp_str($input, 'latitude'));
     $longitude = bp_att_float_or_null(bp_str($input, 'longitude'));
-    if (!bp_att_direct_endpoint_valid_coordinate($latitude, $longitude)) {
+    $hasValidCoordinate = bp_att_direct_endpoint_valid_coordinate($latitude, $longitude);
+    if (!$hasValidCoordinate && !$isWfhDay) {
         bp_send_json([
             'status' => false,
             'message' => 'GPS coordinates are invalid. Please enable GPS and retry.',
         ], 400);
     }
+    if (!$hasValidCoordinate) {
+        $latitude = 0.0;
+        $longitude = 0.0;
+    }
 
-    $context = bp_att_require_context($staffIdInput);
-    $employeeId = trim((string)($context['employee_id'] ?? ''));
     $projectLocations = bp_att_project_locations_for_context($context);
 
     if (!bp_att_context_has_head_office_access($context, $projectLocations)) {
@@ -101,11 +118,14 @@ try {
     }
 
     $radiusMeters = 200.0;
-    $nearest = bp_att_nearest_project_location($projectLocations, (float)$latitude, (float)$longitude);
-    $withinGeofence = $nearest !== null
+    $nearest = $hasValidCoordinate
+        ? bp_att_nearest_project_location($projectLocations, (float)$latitude, (float)$longitude)
+        : null;
+    $withinGeofence = $isWfhDay || ($nearest !== null
         && isset($nearest['distance_meters'])
-        && (float)$nearest['distance_meters'] <= $radiusMeters;
+        && (float)$nearest['distance_meters'] <= $radiusMeters);
     $geofence = bp_att_direct_geofence_payload($nearest, $radiusMeters, $withinGeofence);
+    $geofence['wfh_bypass'] = $isWfhDay;
 
     if ($withinGeofence) {
         $insertResult = bp_att_insert_direct_recognized($context, $input, (float)$latitude, (float)$longitude);
@@ -129,6 +149,7 @@ try {
                 'recognition_time' => (string)($insertResult['recognition_time'] ?? ''),
                 'latitude' => (string)$latitude,
                 'longitude' => (string)$longitude,
+                'is_wfh' => $isWfhDay,
                 'geofence' => $geofence,
             ],
         ]);
