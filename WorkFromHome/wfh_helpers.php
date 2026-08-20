@@ -114,23 +114,37 @@ function bp_wfh_resolve_names(string $table, array $ids, array $candidateColumns
     return $out;
 }
 
+/** Folder name the ERP registers the WFH module under (user_screen.folder_name). */
+const BP_WFH_SCREEN_FOLDER = 'work_from_home';
+
+/**
+ * Whether this staff member's user_type has been granted the WFH screen on the
+ * web User Permission screen (user_screen_permission).
+ *
+ * This is the single source of truth for WFH eligibility. Access is managed
+ * entirely from the web ERP - ticking/unticking WFH for a role there takes
+ * effect in the mobile app with no redeploy. Nothing about company names,
+ * employee-id prefixes or work locations is inferred here; those heuristics
+ * previously both denied real BP India staff and risked admitting sister
+ * entities.
+ *
+ * See bp_staff_has_screen_permission() in Leave/leave_helpers.php for the
+ * lookup and the deliberate fail-closed behaviour.
+ */
+function bp_wfh_can_use_work_from_home(array $staff): bool
+{
+    return bp_staff_has_screen_permission($staff, BP_WFH_SCREEN_FOLDER);
+}
+
+/**
+ * Kept as the name the WFH endpoints already call so the gate could be swapped
+ * without touching every call site. The name is now a misnomer - eligibility is
+ * a web-managed permission, not an entity check - but the behaviour is the one
+ * the product wants: only roles granted WFH in the ERP get it.
+ */
 function bp_wfh_staff_is_bp_india(array $staff): bool
 {
-    // INTERIM rule, deliberately narrow: Biofuels staff must never be
-    // eligible for WFH, and none of them carry a BPIN employee_id, so
-    // ID-prefix-only is a safe way to guarantee that exclusion right now.
-    //
-    // Known gap: BPIW / BPGN / BPPL (and any other non-BPIN prefix) staff who
-    // ARE legitimate BP India / group entities are excluded too, same as
-    // before. The web WFH module (list.php / form.php / crud.php) has no
-
-
-    // just the only one that can guarantee Biofuels is blocked without a
-    // confirmed company_creation -> entity mapping. Replace this with an
-    // explicit company_creation.unique_id allowlist once that data is
-    // available (see the audit query prepared for this), so BPIW/BPGN/BPPL
-    // group staff regain access without reopening Biofuels.
-    return bp_wfh_employee_id_is_bp_india((string)($staff['employee_id'] ?? ''));
+    return bp_wfh_can_use_work_from_home($staff);
 }
 
 function bp_wfh_require_staff(string $staffIdInput): array
@@ -156,10 +170,10 @@ function bp_wfh_require_staff(string $staffIdInput): array
 
 function bp_wfh_require_bp_india(array $staff): void
 {
-    if (!bp_wfh_staff_is_bp_india($staff)) {
+    if (!bp_wfh_can_use_work_from_home($staff)) {
         bp_send_json([
             'status' => false,
-            'message' => 'Work From Home is available only for BP India users',
+            'message' => 'Work From Home access has not been enabled for your role',
         ], 403);
     }
 }

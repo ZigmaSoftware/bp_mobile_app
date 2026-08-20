@@ -72,6 +72,66 @@ if (in_array($period, [1, 2], true) && $fromDate !== $toDate) {
     ], 400);
 }
 
+// ── Short Leave ──────────────────────────────────────────────────────────
+// Isolated path mirroring leave_entry/crud.php's short-leave branch: a single
+// day, 0.25 total_days, times derived from the employee's rostered shift, and
+// at most one per calendar month. Rejected outright while the feature flag is
+// off, so an app build that already has the UI cannot submit one early.
+if (strtolower($leaveTypeId) === 'short_leave') {
+    if (!defined('BP_ENABLE_SHORT_LEAVE') || !BP_ENABLE_SHORT_LEAVE) {
+        bp_send_json([
+            'status' => false,
+            'message' => 'Short Leave is not available yet',
+        ], 403);
+    }
+
+    $shortType = (int)bp_str($input, 'short_type', '0');
+    if (!in_array($shortType, [1, 2], true)) {
+        bp_send_json([
+            'status' => false,
+            'message' => 'Please select Short Type (1 = Forenoon, 2 = Afternoon)',
+        ], 400);
+    }
+
+    if ($fromDate !== $toDate) {
+        bp_send_json([
+            'status' => false,
+            'message' => 'Short Leave applies to a single day',
+        ], 400);
+    }
+
+    $shortTimes = bp_short_leave_shift_times($staff, $fromDate, $shortType);
+    if (!empty($shortTimes['error'])) {
+        bp_send_json([
+            'status' => false,
+            'message' => (string)$shortTimes['error'],
+        ], 400);
+    }
+
+    if (bp_short_leave_month_count($employeeId, $fromDate) >= BP_SHORT_LEAVE_PER_MONTH) {
+        bp_send_json([
+            'status' => false,
+            'message' => 'You have already applied a Short Leave for '
+                . date('F Y', strtotime($fromDate)),
+        ], 400);
+    }
+
+    $result = bp_short_leave_insert(
+        $staff,
+        $employeeId,
+        $fromDate,
+        $shortType,
+        (string)$shortTimes['from_time'],
+        (string)$shortTimes['to_time'],
+        $reason
+    );
+
+    bp_send_json(
+        $result,
+        !empty($result['status']) ? 200 : 500
+    );
+}
+
 $typeMeta = null;
 $halfDayAllowed = true;
 $requiresDocument = false;

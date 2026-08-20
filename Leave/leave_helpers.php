@@ -453,26 +453,348 @@ function bp_fetch_leave_type(string $leaveTypeId): ?array
     );
 }
 
-function bp_fetch_leave_types(): array
+/**
+ * ─── Leave policy resolution (ported from the web ERP) ───────────────────
+ *
+ * Ports config/comfun.php's leave_master_dropdown_for_employee() chain so the
+ * app offers exactly the leave types the web offers the same employee.
+ *
+ * Previously the mobile backend returned EVERY active leave_master_creation
+ * row to everyone, which surfaced other companies' leave types (Bereavement,
+ * Birthday, Maternity ...), showed near-duplicate names belonging to different
+ * policies, and ignored the HR-only / gender gates.
+ *
+ * Web resolution order, reproduced exactly:
+ *   1. Project override  - leave_policy_project_map via staff_test.work_location
+ *   2. Company default   - leave_policy_company_map via staff_test.company_name,
+ *                          excluding project-scoped policies
+ *   3. No policy         - flexi leave types only
+ * then the policy's leave_master_creation rows (policy_unique_id), filtered by
+ * is_hr_only + gender_applicable, plus flexi types, deduped by unique_id.
+ */
+
+/**
+ * Rows from a raw SQL statement. $pdo->select() only takes a single table, so
+ * joined lookups go through query() - the same pattern the attendance helpers
+ * already use. Returns [] on failure rather than throwing, so a missing
+ * optional table degrades instead of 500ing the endpoint.
+ */
+function bp_query_rows(string $sql): array
 {
-    $rows = bp_fetch_rows(
-        'leave_master_creation',
-        [
-            'unique_id',
-            'leave_type',
-            'half_day',
-            'is_document_required',
-            'document_text',
-            'is_sandwich_applicable',
-            'balance_handling',
-            'is_active',
-            'is_delete',
-        ],
-        [
-            'is_delete' => 0,
-            'is_active' => 1,
-        ]
+    global $pdo;
+
+    try {
+        $result = $pdo->query($sql);
+    } catch (Throwable $e) {
+        error_log('bp_mobile_app leave policy query failed: ' . bp_error_value_to_text($e));
+        return [];
+    }
+
+    if (!$result || !($result->status ?? false) || !is_array($result->data ?? null)) {
+        return [];
+    }
+
+    return $result->data;
+}
+
+/** True when the optional leave_policy_project_map table exists. */
+function bp_leave_policy_project_map_available(): bool
+{
+    static $available = null;
+    if ($available !== null) {
+        return $available;
+    }
+
+    $available = !empty(bp_table_columns('leave_policy_project_map'));
+    return $available;
+}
+
+/** staff_test.work_location CSV -> project ids (leave_policy_employee_project_ids). */
+function bp_leave_policy_employee_project_ids(string $employeeId): array
+{
+    $employeeId = trim($employeeId);
+    if ($employeeId === '') {
+        return [];
+    }
+
+    $row = bp_fetch_one(
+        'staff_test',
+        ['work_location'],
+        'employee_id = ' . bp_sql_quote($employeeId) . ' AND is_active = 1 AND is_delete = 0 LIMIT 1'
     );
+
+    return bp_parse_csv_values((string)($row['work_location'] ?? ''));
+}
+
+/** staff_test.company_name CSV -> company ids (leave_policy_employee_company_ids). */
+function bp_leave_policy_employee_company_ids(string $employeeId): array
+{
+    $employeeId = trim($employeeId);
+    if ($employeeId === '') {
+        return [];
+    }
+
+    $columns = bp_table_columns('staff_test');
+    $select = array_values(array_filter(
+        ['company_name', 'sess_company_id'],
+        static fn($c) => isset($columns[$c])
+    ));
+    if (empty($select)) {
+        return [];
+    }
+
+    $row = bp_fetch_one(
+        'staff_test',
+        $select,
+        'employee_id = ' . bp_sql_quote($employeeId) . ' AND is_active = 1 AND is_delete = 0 LIMIT 1'
+    );
+    if (!$row) {
+        return [];
+    }
+
+    $ids = bp_parse_csv_values((string)($row['company_name'] ?? ''));
+    if (empty($ids)) {
+        // Web falls back to sess_company_id when company_name is blank.
+        $fallback = trim((string)($row['sess_company_id'] ?? ''));
+        if ($fallback !== '') {
+            $ids[] = $fallback;
+        }
+    }
+
+    return array_values(array_unique($ids));
+}
+
+/**
+ * The leave policy that applies to this employee.
+ * Project override wins over the company default (resolve_employee_leave_policy).
+ * Returns '' when no policy applies.
+ */
+function bp_resolve_employee_leave_policy(string $employeeId): string
+{
+    $employeeId = trim($employeeId);
+    if ($employeeId === '') {
+        return '';
+    }
+
+    $projectAware = bp_leave_policy_project_map_available();
+    $today = bp_sql_quote(date('Y-m-d'));
+
+    // 1. Project override.
+    if ($projectAware) {
+        $projectIds = bp_leave_policy_employee_project_ids($employeeId);
+        if (!empty($projectIds)) {
+            $quoted = implode(', ', array_map('bp_sql_quote', $projectIds));
+            // Raw query: $pdo->select() takes a single table, so joins go
+            // through query() here the same way the attendance helpers do.
+            $rows = bp_query_rows(
+                'SELECT p.unique_id
+                 FROM leave_policy_project_map pm
+                 JOIN leave_policy_creation p ON p.unique_id = pm.policy_unique_id
+                 WHERE pm.project_id IN (' . $quoted . ')
+                   AND pm.is_delete = 0 AND pm.is_active = 1
+                   AND p.is_active = 1 AND p.is_delete = 0
+                   AND (p.effective_from IS NULL OR p.effective_from <= ' . $today . ')
+                   AND (p.effective_to IS NULL OR p.effective_to >= ' . $today . ')
+                 ORDER BY (p.effective_from IS NULL), p.effective_from DESC
+                 LIMIT 1'
+            );
+            $policyId = trim((string)($rows[0]['unique_id'] ?? ''));
+            if ($policyId !== '') {
+                return $policyId;
+            }
+        }
+    }
+
+    // 2. Company default, excluding project-scoped policies.
+    $companyIds = bp_leave_policy_employee_company_ids($employeeId);
+    if (empty($companyIds)) {
+        return '';
+    }
+
+    $excludeProjectScoped = $projectAware
+        ? ' AND NOT EXISTS (SELECT 1 FROM leave_policy_project_map pm2
+                            WHERE pm2.policy_unique_id = p.unique_id
+                              AND pm2.is_active = 1 AND pm2.is_delete = 0)'
+        : '';
+
+    $quoted = implode(', ', array_map('bp_sql_quote', $companyIds));
+    $rows = bp_query_rows(
+        'SELECT p.unique_id
+         FROM leave_policy_company_map m
+         JOIN leave_policy_creation p ON p.unique_id = m.policy_unique_id
+         WHERE m.company_id IN (' . $quoted . ')
+           AND m.is_delete = 0 AND m.is_active = 1
+           AND p.is_active = 1 AND p.is_delete = 0
+           AND (p.effective_from IS NULL OR p.effective_from <= ' . $today . ')
+           AND (p.effective_to IS NULL OR p.effective_to >= ' . $today . ')'
+        . $excludeProjectScoped
+        . ' ORDER BY (p.effective_from IS NULL), p.effective_from DESC
+         LIMIT 1'
+    );
+
+    return trim((string)($rows[0]['unique_id'] ?? ''));
+}
+
+/** Flexi leave types, always offered regardless of policy (leave_policy_special_leave_rows). */
+function bp_leave_policy_special_leave_rows(): array
+{
+    return bp_fetch_rows(
+        'leave_master_creation',
+        ['unique_id', 'leave_type'],
+        "is_active = 1 AND is_delete = 0 AND LOWER(leave_type) LIKE '%flexi%' ORDER BY leave_type ASC"
+    );
+}
+
+/** staff_test.gender -> MALE/FEMALE/'' (leave_gender_norm). */
+function bp_leave_gender_norm($value): string
+{
+    $g = strtolower(trim((string)$value));
+    if ($g === '') {
+        return '';
+    }
+    if ($g === '1' || $g[0] === 'm') {
+        return 'MALE';
+    }
+    if ($g === '2' || $g[0] === 'f') {
+        return 'FEMALE';
+    }
+    return '';
+}
+
+function bp_leave_employee_gender(string $employeeId): string
+{
+    $employeeId = trim($employeeId);
+    if ($employeeId === '' || !isset(bp_table_columns('staff_test')['gender'])) {
+        return '';
+    }
+
+    $row = bp_fetch_one(
+        'staff_test',
+        ['gender'],
+        'employee_id = ' . bp_sql_quote($employeeId) . ' AND is_active = 1 AND is_delete = 0 LIMIT 1'
+    );
+
+    return bp_leave_gender_norm($row['gender'] ?? '');
+}
+
+/**
+ * HR-only + gender visibility (leave_master_passes_visibility).
+ *
+ * NOTE: the web's HR-only gate is operator-based (leave_user_is_hr_or_dev()).
+ * The mobile app has no operator concept - an employee always applies for
+ * themselves - so an is_hr_only type is hidden unless the applicant is
+ * themselves an HR user, which is the safe reading of the same rule.
+ */
+function bp_leave_master_passes_visibility(array $masterRow, string $employeeId, bool $isHrUser): bool
+{
+    if ((int)($masterRow['is_hr_only'] ?? 0) === 1 && !$isHrUser) {
+        return false;
+    }
+
+    $genderApplicable = strtoupper(trim((string)($masterRow['gender_applicable'] ?? 'ALL')));
+    if ($genderApplicable === 'MALE' || $genderApplicable === 'FEMALE') {
+        $gender = bp_leave_employee_gender($employeeId);
+        // Unknown gender must not hide the type (matches the web).
+        if ($gender !== '' && $gender !== $genderApplicable) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function bp_fetch_leave_types(string $employeeId = '', bool $isHrUser = false): array
+{
+    $masterColumns = bp_table_columns('leave_master_creation');
+    $policyAware = isset($masterColumns['policy_unique_id']);
+
+    $selectColumns = array_values(array_filter([
+        'unique_id',
+        'leave_type',
+        'half_day',
+        'is_document_required',
+        'document_text',
+        'is_sandwich_applicable',
+        'balance_handling',
+        isset($masterColumns['gender_applicable']) ? 'gender_applicable' : null,
+        isset($masterColumns['is_hr_only']) ? 'is_hr_only' : null,
+        'is_active',
+        'is_delete',
+    ], static fn($c) => is_string($c) && isset($masterColumns[$c])));
+
+    $employeeId = trim($employeeId);
+    $policyId = ($policyAware && $employeeId !== '')
+        ? bp_resolve_employee_leave_policy($employeeId)
+        : '';
+
+    if ($policyId !== '') {
+        // Policy resolved: only that policy's types, plus flexi types.
+        $rows = bp_fetch_rows(
+            'leave_master_creation',
+            $selectColumns,
+            'policy_unique_id = ' . bp_sql_quote($policyId)
+            . ' AND is_active = 1 AND is_delete = 0 ORDER BY leave_type ASC'
+        );
+
+        $flexiIds = [];
+        foreach (bp_leave_policy_special_leave_rows() as $flexi) {
+            $flexiIds[trim((string)($flexi['unique_id'] ?? ''))] = true;
+        }
+        unset($flexiIds['']);
+        if (!empty($flexiIds)) {
+            $quoted = implode(', ', array_map('bp_sql_quote', array_keys($flexiIds)));
+            foreach (bp_fetch_rows(
+                'leave_master_creation',
+                $selectColumns,
+                'unique_id IN (' . $quoted . ') AND is_active = 1 AND is_delete = 0'
+            ) as $flexiRow) {
+                $rows[] = $flexiRow;
+            }
+        }
+    } elseif ($policyAware && $employeeId !== '') {
+        // No policy for this employee: the web offers flexi types only.
+        $flexiIds = [];
+        foreach (bp_leave_policy_special_leave_rows() as $flexi) {
+            $flexiIds[trim((string)($flexi['unique_id'] ?? ''))] = true;
+        }
+        unset($flexiIds['']);
+        $rows = [];
+        if (!empty($flexiIds)) {
+            $quoted = implode(', ', array_map('bp_sql_quote', array_keys($flexiIds)));
+            $rows = bp_fetch_rows(
+                'leave_master_creation',
+                $selectColumns,
+                'unique_id IN (' . $quoted . ') AND is_active = 1 AND is_delete = 0'
+            );
+        }
+    } else {
+        // Pre-policy schema, or no employee context: previous behaviour.
+        $rows = bp_fetch_rows(
+            'leave_master_creation',
+            $selectColumns,
+            ['is_delete' => 0, 'is_active' => 1]
+        );
+    }
+
+    // HR-only + gender gates, then dedupe by unique_id (leave_policy_dropdown_rows).
+    if ($employeeId !== '') {
+        $rows = array_values(array_filter(
+            $rows,
+            static fn(array $row) => bp_leave_master_passes_visibility($row, $employeeId, $isHrUser)
+        ));
+    }
+
+    $seen = [];
+    $deduped = [];
+    foreach ($rows as $row) {
+        $uid = trim((string)($row['unique_id'] ?? ''));
+        if ($uid === '' || isset($seen[$uid])) {
+            continue;
+        }
+        $seen[$uid] = true;
+        $deduped[] = $row;
+    }
+    $rows = $deduped;
 
     $out = [];
     foreach ($rows as $row) {
@@ -490,7 +812,29 @@ function bp_fetch_leave_types(): array
     usort($out, static function (array $a, array $b): int {
         return strcasecmp($a['leave_type'], $b['leave_type']);
     });
-    $out[] = [
+
+    // Synthetic types the web prepends for every employee via array_unshift in
+    // leave_entry/form.php - they are not leave_master_creation rows, so they
+    // have to be added here too.
+    $special = [];
+
+    // Short Leave stays hidden until BP_ENABLE_SHORT_LEAVE is switched on
+    // (pending business approval). Gating the dropdown entry means an app
+    // build that already has the Short Leave UI simply never sees the option,
+    // so the backend flag alone controls the rollout.
+    if (defined('BP_ENABLE_SHORT_LEAVE') && BP_ENABLE_SHORT_LEAVE) {
+        $special[] = [
+            'leave_type_id' => 'short_leave',
+            'leave_type' => 'Short Leave',
+            'half_day' => false,
+            'is_document_required' => false,
+            'document_text' => '',
+            'is_sandwich_applicable' => false,
+            'balance_handling' => 'short_leave',
+        ];
+    }
+
+    $special[] = [
         'leave_type_id' => 'lwp',
         'leave_type' => 'Leave Without Pay',
         'half_day' => true,
@@ -499,6 +843,8 @@ function bp_fetch_leave_types(): array
         'is_sandwich_applicable' => false,
         'balance_handling' => 'lwp',
     ];
+
+    $out = array_merge($special, $out);
 
     return $out;
 }
@@ -511,12 +857,74 @@ function bp_fetch_leave_type_map(): array
         return $map;
     }
 
+    // Deliberately unscoped: this is an id -> metadata lookup used to render
+    // existing leave records, which may reference a type outside the viewer's
+    // current policy (historical rows, or a type since moved to another
+    // policy). Filtering here would leave those rows without a name.
     $map = [];
     foreach (bp_fetch_leave_types() as $type) {
         $map[$type['leave_type_id']] = $type;
     }
 
     return $map;
+}
+
+/**
+ * Display name for a leave_type_id, given the map from bp_fetch_leave_type_map().
+ * Both 'lwp' and 'short_leave' are synthetic ids with no leave_master_creation
+ * row (see bp_fetch_leave_types()), so they need this fallback wherever a
+ * leave_entry row's type is shown - the map lookup alone leaves them blank and
+ * falls through to the raw id string ("short_leave") instead of a readable
+ * label. Kept in one place after the same two-branch fallback was duplicated
+ * between bp_attach_leave_meta() and leave_update_status.php.
+ */
+function bp_leave_type_label(string $leaveTypeId, array $typeMap): string
+{
+    $typeRow = $typeMap[$leaveTypeId] ?? null;
+    if (isset($typeRow['leave_type']) && $typeRow['leave_type'] !== '') {
+        return (string)$typeRow['leave_type'];
+    }
+
+    switch (strtolower($leaveTypeId)) {
+        case 'lwp':
+            return 'Leave Without Pay';
+        case 'short_leave':
+            return 'Short Leave';
+        default:
+            return $leaveTypeId;
+    }
+}
+
+/**
+ * "01 Sep 2026" style date-range summary for a leave_entry-shaped array, used
+ * in notification text. Short Leave is always a single day, so "from → to" on
+ * the same date is meaningless there - the shift-derived time window is shown
+ * instead, matching what the app's approval screen displays.
+ */
+function bp_leave_period_summary(array $record): string
+{
+    $leaveTypeId = strtolower(trim((string)($record['leave_type_id'] ?? '')));
+    $fromDate = (string)($record['from_date'] ?? '');
+    $toDate = (string)($record['to_date'] ?? '');
+
+    if ($leaveTypeId !== 'short_leave') {
+        return $fromDate . ' → ' . $toDate;
+    }
+
+    $shortType = (int)($record['short_type'] ?? 0);
+    $slotLabel = $shortType === 2 ? 'Afternoon' : ($shortType === 1 ? 'Forenoon' : '');
+    $fromTime = trim((string)($record['from_time'] ?? ''));
+    $toTime = trim((string)($record['to_time'] ?? ''));
+
+    $summary = $fromDate;
+    if ($slotLabel !== '') {
+        $summary .= ' · ' . $slotLabel;
+    }
+    if ($fromTime !== '' && $toTime !== '') {
+        $summary .= ' (' . substr($fromTime, 0, 5) . ' - ' . substr($toTime, 0, 5) . ')';
+    }
+
+    return $summary;
 }
 
 function bp_fetch_leave_balances(string $staffName, string $staffUniqueId = '', string $employeeId = ''): array
@@ -1407,8 +1815,8 @@ function bp_has_overlap(string $employeeId, string $fromDate, string $toDate, st
 
 function bp_fetch_leave_entries(string $where): array
 {
-    $rows = bp_fetch_rows(
-        'leave_entry',
+    $columns = bp_table_columns('leave_entry');
+    $select = array_values(array_filter(
         [
             'unique_id',
             'employee_id',
@@ -1423,9 +1831,18 @@ function bp_fetch_leave_entries(string $where): array
             'created',
             'updated',
             'updated_user_id',
+            // Short Leave only: the from_time/to_time window the approver
+            // needs to see, and which Forenoon/Afternoon slot was requested.
+            // Selected defensively since an install that predates the Short
+            // Leave columns should keep working with these simply absent.
+            'from_time',
+            'to_time',
+            'short_type',
         ],
-        $where
-    );
+        static fn(string $column) => empty($columns) || isset($columns[$column])
+    ));
+
+    $rows = bp_fetch_rows('leave_entry', $select, $where);
 
     usort($rows, static function (array $a, array $b): int {
         $aTime = strtotime((string)($a['created'] ?? $a['from_date'] ?? '')) ?: 0;
@@ -1519,8 +1936,7 @@ function bp_attach_leave_meta(array $entries): array
         $leaveTypeId = (string)($row['leave_type_id'] ?? '');
         $status = (int)($row['status'] ?? 0);
 
-        $typeRow = $typeMap[$leaveTypeId] ?? null;
-        $leaveType = $typeRow['leave_type'] ?? ($leaveTypeId === 'lwp' ? 'Leave Without Pay' : $leaveTypeId);
+        $leaveType = bp_leave_type_label($leaveTypeId, $typeMap);
 
         $out[] = [
             'unique_id' => (string)($row['unique_id'] ?? ''),
@@ -1538,6 +1954,10 @@ function bp_attach_leave_meta(array $entries): array
             'reason' => (string)($row['reason'] ?? ''),
             'created' => (string)($row['created'] ?? ''),
             'updated' => (string)($row['updated'] ?? ''),
+            // Short Leave only. Blank for every other leave type.
+            'short_type' => (int)($row['short_type'] ?? 0),
+            'from_time' => (string)($row['from_time'] ?? ''),
+            'to_time' => (string)($row['to_time'] ?? ''),
         ];
     }
 
@@ -1546,8 +1966,8 @@ function bp_attach_leave_meta(array $entries): array
 
 function bp_fetch_leave_record(string $leaveUniqueId): ?array
 {
-    return bp_fetch_one(
-        'leave_entry',
+    $columns = bp_table_columns('leave_entry');
+    $select = array_values(array_filter(
         [
             'unique_id',
             'employee_id',
@@ -1562,7 +1982,18 @@ function bp_fetch_leave_record(string $leaveUniqueId): ?array
             'created',
             'updated',
             'updated_user_id',
+            // Short Leave only - see bp_fetch_leave_entries() for why these
+            // are selected defensively.
+            'from_time',
+            'to_time',
+            'short_type',
         ],
+        static fn(string $column) => empty($columns) || isset($columns[$column])
+    ));
+
+    return bp_fetch_one(
+        'leave_entry',
+        $select,
         [
             'unique_id' => $leaveUniqueId,
             'is_delete' => 0,
@@ -2905,6 +3336,13 @@ function bp_send_leave_status_email(
         . htmlspecialchars(bp_format_display_date((string)($leaveRecord['to_date'] ?? '')), ENT_QUOTES, 'UTF-8') . '</td></tr>'
         . '<tr><td style="padding:6px 10px;font-weight:600;">Total Days</td><td style="padding:6px 10px;">'
         . htmlspecialchars((string)($leaveRecord['total_days'] ?? '0'), ENT_QUOTES, 'UTF-8') . '</td></tr>'
+        // Short Leave is a 2-hour slot rather than whole days, so "Total Days:
+        // 0.25" reads oddly on its own - add the actual time window alongside
+        // it rather than replacing any existing row.
+        . (strtolower((string)($leaveRecord['leave_type_id'] ?? '')) === 'short_leave'
+            ? '<tr style="background:#f9fafb;"><td style="padding:6px 10px;font-weight:600;">Time Window</td><td style="padding:6px 10px;">'
+                . htmlspecialchars(bp_leave_period_summary($leaveRecord), ENT_QUOTES, 'UTF-8') . '</td></tr>'
+            : '')
         . '<tr style="background:#f9fafb;"><td style="padding:6px 10px;font-weight:600;">Decision By</td><td style="padding:6px 10px;">'
         . htmlspecialchars($decisionBy, ENT_QUOTES, 'UTF-8') . '</td></tr>'
         . '<tr><td style="padding:6px 10px;font-weight:600;">Decision At</td><td style="padding:6px 10px;">'
@@ -2944,5 +3382,359 @@ function bp_send_leave_status_email(
         'to' => $emails,
         'subject' => $subject,
         'error' => $error,
+    ];
+}
+
+/**
+ * ─── Web-managed screen permissions ──────────────────────────────────────
+ *
+ * The web ERP's "User Permission" screen (folders/user_permission) grants
+ * modules to a *user_type*, storing one row per
+ * (user_type, main_screen, section, screen, action) in user_screen_permission.
+ * A module is identified by user_screen.folder_name, matching the on-disk
+ * folders/<name>/ directory.
+ *
+ * These helpers let the mobile backend read that same grant so module access is
+ * configured in one place - the web screen - and takes effect in the app with
+ * no redeploy. They are strictly read-only; nothing here writes to the ERP.
+ *
+ * Fail CLOSED by design: an unregistered screen, a staff member with no user
+ * row, or zero permission rows all resolve to "no access". The web's own
+ * user_can_action() fails OPEN (no rows configured = allow everything), but
+ * copying that here would turn any lookup failure into a silent grant to every
+ * user in the system.
+ */
+
+/**
+ * user_screen.unique_id for a module, resolved by exact folder_name.
+ *
+ * No screen_name LIKE fallback on purpose: a fuzzy match on an access gate can
+ * resolve to the wrong screen, and the wrong screen means granting or denying
+ * the module to everyone. Returns '' when the module is not registered.
+ */
+function bp_screen_unique_id_for_folder(string $folderName): string
+{
+    static $cache = [];
+
+    $folderName = trim($folderName);
+    if ($folderName === '') {
+        return '';
+    }
+    if (array_key_exists($folderName, $cache)) {
+        return $cache[$folderName];
+    }
+
+    $columns = bp_table_columns('user_screen');
+    if (empty($columns) || !isset($columns['unique_id']) || !isset($columns['folder_name'])) {
+        $cache[$folderName] = '';
+        return $cache[$folderName];
+    }
+
+    $where = 'folder_name = ' . bp_sql_quote($folderName);
+    if (isset($columns['is_active'])) {
+        $where .= ' AND is_active = 1';
+    }
+    if (isset($columns['is_delete'])) {
+        $where .= ' AND is_delete = 0';
+    }
+
+    $row = bp_fetch_one('user_screen', ['unique_id'], $where . ' LIMIT 1');
+    $cache[$folderName] = trim((string)($row['unique_id'] ?? ''));
+    return $cache[$folderName];
+}
+
+/**
+ * The user row's user_type id for a staff_test row.
+ *
+ * The ERP login and user maintenance screens store the role in
+ * `user_type_unique_id`; `user_type` is accepted only as an older/alternate
+ * fallback. staff_unique_id holds the employee id on this install, but
+ * staff_test.unique_id is matched too because other call sites treat the two
+ * interchangeably.
+ */
+function bp_user_type_for_staff(array $staff): string
+{
+    $columns = bp_table_columns('user');
+    if (empty($columns) || !isset($columns['staff_unique_id'])) {
+        return '';
+    }
+
+    $typeColumn = isset($columns['user_type_unique_id'])
+        ? 'user_type_unique_id'
+        : (isset($columns['user_type']) ? 'user_type' : '');
+    if ($typeColumn === '') {
+        return '';
+    }
+
+    $candidates = [];
+    foreach ([(string)($staff['unique_id'] ?? ''), (string)($staff['employee_id'] ?? '')] as $value) {
+        $value = trim($value);
+        if ($value !== '') {
+            $candidates[$value] = true;
+        }
+    }
+    if (empty($candidates)) {
+        return '';
+    }
+
+    $quoted = array_map('bp_sql_quote', array_keys($candidates));
+    $where = 'staff_unique_id IN (' . implode(', ', $quoted) . ')';
+    if (isset($columns['is_active'])) {
+        $where .= ' AND is_active = 1';
+    }
+    if (isset($columns['is_delete'])) {
+        $where .= ' AND is_delete = 0';
+    }
+    // Newest row wins when a staff member has more than one user record.
+    if (isset($columns['s_no'])) {
+        $where .= ' ORDER BY s_no DESC';
+    }
+
+    $row = bp_fetch_one('user', [$typeColumn], $where . ' LIMIT 1');
+    return trim((string)($row[$typeColumn] ?? ''));
+}
+
+/**
+ * Whether this staff member's user_type has been granted the given module on
+ * the web User Permission screen. Fails closed - see the section note above.
+ */
+function bp_staff_has_screen_permission(array $staff, string $folderName): bool
+{
+    $screenId = bp_screen_unique_id_for_folder($folderName);
+    if ($screenId === '') {
+        return false;
+    }
+
+    $userType = bp_user_type_for_staff($staff);
+    if ($userType === '') {
+        return false;
+    }
+
+    $columns = bp_table_columns('user_screen_permission');
+    if (empty($columns) || !isset($columns['user_type']) || !isset($columns['screen_unique_id'])) {
+        return false;
+    }
+
+    $where = 'user_type = ' . bp_sql_quote($userType)
+        . ' AND screen_unique_id = ' . bp_sql_quote($screenId);
+    if (isset($columns['is_active'])) {
+        $where .= ' AND is_active = 1';
+    }
+    if (isset($columns['is_delete'])) {
+        $where .= ' AND is_delete = 0';
+    }
+
+    $rows = bp_fetch_rows('user_screen_permission', ['unique_id'], $where . ' LIMIT 1');
+    return !empty($rows);
+}
+
+/**
+ * Whether this staff member's user_type has been granted ANY of the given
+ * modules. The same logical screen can be registered under more than one
+ * folder in the ERP (the attendance report exists as monthly_attendance_report,
+ * monthly_attendance_report_new and several executive_* variants), so callers
+ * pass every folder that should unlock the mobile equivalent.
+ */
+function bp_staff_has_any_screen_permission(array $staff, array $folderNames): bool
+{
+    foreach ($folderNames as $folderName) {
+        if (bp_staff_has_screen_permission($staff, (string)$folderName)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * ─── Short Leave ─────────────────────────────────────────────────────────
+ *
+ * Ports the short-leave branch of the web's leave_entry/crud.php so a mobile
+ * submission produces an identical leave_entry row. Behind BP_ENABLE_SHORT_LEAVE
+ * until the feature is approved.
+ */
+
+/** Web allows one short leave per calendar month. */
+const BP_SHORT_LEAVE_PER_MONTH = 1;
+
+/**
+ * Shift-derived time window for a short leave.
+ * Forenoon (1) = first 2 hours of the shift, Afternoon (2) = last 2 hours,
+ * matching the web. Returns ['error' => '...'] when the employee has no shift
+ * rostered for the date, which the web also treats as a hard failure.
+ */
+function bp_short_leave_shift_times(array $staff, string $date, int $shortType): array
+{
+    $staffUniqueId = trim((string)($staff['unique_id'] ?? ''));
+    if ($staffUniqueId === '') {
+        return ['error' => 'Staff not found'];
+    }
+
+    // shift_roster_details keys on staff_test.unique_id, not employee_id. The
+    // table is spelled both "roster" and "roaster" across environments, so try
+    // both the same way bp_fetch_explicit_weekoff_map does.
+    $roster = [];
+    foreach (['shift_roster_details', 'shift_roaster_details'] as $tableName) {
+        $rosterColumns = bp_table_columns($tableName);
+        if (empty($rosterColumns)) {
+            continue;
+        }
+
+        // shift_unique_id was added later; older schemas only have shift_name.
+        $select = ['shift_name'];
+        if (!empty($rosterColumns['shift_unique_id'])) {
+            $select[] = 'shift_unique_id';
+        }
+
+        $roster = bp_fetch_one(
+            $tableName,
+            $select,
+            'employee_id = ' . bp_sql_quote($staffUniqueId)
+            . ' AND shift_date = ' . bp_sql_quote($date)
+            . ' AND is_delete = 0 LIMIT 1'
+        ) ?: [];
+
+        if (!empty($roster)) {
+            break;
+        }
+    }
+
+    $shiftName = trim((string)($roster['shift_name'] ?? ''));
+    $shiftUniqueId = trim((string)($roster['shift_unique_id'] ?? ''));
+    if ($shiftName === '' && $shiftUniqueId === '') {
+        return ['error' => 'No shift assigned for the selected date'];
+    }
+
+    // A rostered week off has no working window, so a short leave cannot apply.
+    // shift_roaster stores these as shift_unique_id 'wo' / shift_name 'Week Off'.
+    if (strtolower($shiftUniqueId) === 'wo'
+        || strpos(str_replace(' ', '', strtolower($shiftName)), 'weekoff') !== false) {
+        return ['error' => 'Selected date is a week off'];
+    }
+
+    // Match the web's get_short_leave_time: resolve the shift by its
+    // unique_id, which is what shift_roaster stores at assignment time.
+    // shift_name is only a display copy and can drift from shift_creation, so
+    // it is a fallback for older roster rows that predate shift_unique_id.
+    $shift = [];
+    if ($shiftUniqueId !== '') {
+        $shift = bp_fetch_one(
+            'shift_creation',
+            ['start_time', 'end_time'],
+            'unique_id = ' . bp_sql_quote($shiftUniqueId)
+            . ' AND is_delete = 0 AND is_active = 1 LIMIT 1'
+        ) ?: [];
+    }
+
+    if (empty($shift) && $shiftName !== '') {
+        $shift = bp_fetch_one(
+            'shift_creation',
+            ['start_time', 'end_time'],
+            'shift_name = ' . bp_sql_quote($shiftName)
+            . ' AND is_delete = 0 AND is_active = 1 LIMIT 1'
+        ) ?: [];
+    }
+
+    $start = trim((string)($shift['start_time'] ?? ''));
+    $end = trim((string)($shift['end_time'] ?? ''));
+    if ($start === '' || $end === '') {
+        return ['error' => 'Shift timing not configured'];
+    }
+
+    if ($shortType === 1) {
+        $fromTime = date('H:i:s', strtotime($start));
+        $toTime = date('H:i:s', strtotime('+2 hours', strtotime($start)));
+    } else {
+        $toTime = date('H:i:s', strtotime($end));
+        $fromTime = date('H:i:s', strtotime('-2 hours', strtotime($end)));
+    }
+
+    return ['from_time' => $fromTime, 'to_time' => $toTime, 'error' => ''];
+}
+
+/** Short leaves already applied in the same calendar month (rejected ones excluded). */
+function bp_short_leave_month_count(string $employeeId, string $date): int
+{
+    $employeeId = trim($employeeId);
+    if ($employeeId === '') {
+        return 0;
+    }
+
+    $monthStart = date('Y-m-01', strtotime($date));
+    $monthEnd = date('Y-m-t', strtotime($date));
+
+    $rows = bp_fetch_rows(
+        'leave_entry',
+        ['COUNT(*) AS cnt'],
+        'employee_id = ' . bp_sql_quote($employeeId)
+        . " AND leave_type_id = 'short_leave'"
+        . ' AND is_delete = 0'
+        . ' AND status != 2'
+        . ' AND from_date >= ' . bp_sql_quote($monthStart)
+        . ' AND from_date <= ' . bp_sql_quote($monthEnd)
+    );
+
+    return (int)($rows[0]['cnt'] ?? 0);
+}
+
+/** Insert the short-leave row with the same columns the web writes. */
+function bp_short_leave_insert(
+    array $staff,
+    string $employeeId,
+    string $date,
+    int $shortType,
+    string $fromTime,
+    string $toTime,
+    string $reason
+): array {
+    $now = bp_now();
+    $uniqueId = bp_unique_id();
+
+    $columns = bp_filter_table_columns('leave_entry', [
+        'unique_id' => $uniqueId,
+        'employee_id' => $employeeId,
+        'leave_type_id' => 'short_leave',
+        'from_date' => $date,
+        'to_date' => $date,
+        'short_type' => $shortType,
+        'from_time' => $fromTime,
+        'to_time' => $toTime,
+        'total_days' => 0.25,
+        'half_day' => 0,
+        'status' => 0,
+        'reason' => $reason,
+        'created' => $now,
+        'updated' => $now,
+        'created_user_id' => $employeeId,
+        'updated_user_id' => $employeeId,
+        'is_active' => 1,
+        'is_delete' => 0,
+    ]);
+
+    $result = bp_insert_row_raw('leave_entry', $columns);
+    if (!$result || !($result->status ?? false)) {
+        return [
+            'status' => false,
+            'message' => 'Failed to submit Short Leave',
+            'error' => bp_error_value_to_text($result->error ?? ''),
+        ];
+    }
+
+    return [
+        'status' => true,
+        'message' => 'Short Leave submitted for approval',
+        'data' => [
+            'unique_id' => $uniqueId,
+            'leave_type_id' => 'short_leave',
+            'leave_type' => 'Short Leave',
+            'from_date' => $date,
+            'to_date' => $date,
+            'short_type' => $shortType,
+            'from_time' => $fromTime,
+            'to_time' => $toTime,
+            'total_days' => 0.25,
+            'status' => 0,
+            'status_label' => 'Pending',
+        ],
     ];
 }

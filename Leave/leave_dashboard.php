@@ -37,7 +37,8 @@ if ($calendarFromDate === null || $calendarToDate === null || $calendarFromDate 
     $calendarToDate = $today->modify('+730 days')->format('Y-m-d');
 }
 
-$leaveTypes = bp_fetch_leave_types();
+// Scoped to this employee's leave policy, exactly like the web dropdown.
+$leaveTypes = bp_fetch_leave_types($employeeId, bp_is_hr_staff($employeeId));
 $balances = bp_fetch_leave_balances(
     (string)($staff['staff_name'] ?? ''),
     (string)($staff['unique_id'] ?? ''),

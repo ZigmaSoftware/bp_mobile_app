@@ -71,6 +71,10 @@ bp_send_json([
             'staff_name' => (string)($staff['staff_name'] ?? ''),
             'reporting_officer' => (string)($staff['reporting_officer'] ?? ''),
         ],
+        // can_use_wfh is the accurate name (a web-managed permission, not an
+        // entity check). is_bp_india is kept as the same value so already
+        // shipped app builds, which only know that key, keep working.
+        'can_use_wfh' => $isBpIndia,
         'is_bp_india' => $isBpIndia,
         'is_reporting_officer' => $isReportingOfficer,
         'pending_approvals_count' => count($pendingTeamRequests),

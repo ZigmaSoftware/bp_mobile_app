@@ -111,12 +111,14 @@ if (!$update || !($update->status ?? false)) {
 
 $typeMap = bp_fetch_leave_type_map();
 $leaveTypeId = (string)($record['leave_type_id'] ?? '');
-$leaveTypeLabel = $typeMap[$leaveTypeId]['leave_type'] ?? ($leaveTypeId === 'lwp' ? 'Leave Without Pay' : $leaveTypeId);
+$leaveTypeLabel = bp_leave_type_label($leaveTypeId, $typeMap);
 $warnings = [];
 
 $title = $statusCode === 1 ? 'Leave Approved' : 'Leave Rejected';
+// bp_leave_period_summary() shows Short Leave's actual time window instead of
+// "from_date → to_date" on the same date, which told the employee nothing.
 $message = 'Your leave has been ' . strtolower(bp_status_label($statusCode)) . ' • '
-    . $leaveTypeLabel . ' • ' . (string)($record['from_date'] ?? '') . ' → ' . (string)($record['to_date'] ?? '');
+    . $leaveTypeLabel . ' • ' . bp_leave_period_summary($record);
 
 $notificationResult = [];
 $pushResult = [

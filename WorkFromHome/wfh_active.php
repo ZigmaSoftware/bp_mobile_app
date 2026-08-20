@@ -30,6 +30,7 @@ bp_send_json([
     'message' => 'WFH status loaded',
     'data' => [
         'date' => $date,
+        'can_use_wfh' => $isBpIndia,
         'is_bp_india' => $isBpIndia,
         'is_wfh' => !empty($items),
         'wfh_request' => $items[0] ?? null,

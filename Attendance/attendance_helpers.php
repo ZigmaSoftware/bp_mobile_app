@@ -515,8 +515,90 @@ function bp_att_report_absent_statuses(): array
 
 function bp_att_report_weekoff_statuses(): array
 {
-    // crud.php $WEEKOFF_HOLIDAY_STATUSES
-    return ['week off', 'holiday'];
+    // crud.php $WEEKOFF_HOLIDAY_STATUSES = ['Weekoff', 'Holiday'].
+    //
+    // The view stores the unspaced spelling "Weekoff", which normalizes to
+    // "weekoff" - listing only "week off" here matched nothing and made the
+    // bucket always 0 while the web reported the real count. Accept the same 
+    // spelling variants bp_attendance_weekoff_holiday_statuses() already
+    // handles, so a roster/view rename cannot silently zero the bucket again.
+    return bp_attendance_weekoff_holiday_statuses();
+}
+
+/**
+ * Holiday names from holiday_creation, normalized, as a name => true set.
+ *
+ * vw_attendance_with_shift does NOT emit the literal status 'Holiday' - it
+ * emits the holiday's own description, e.g. "Independence Day" on 2026-08-15.
+ * The web still counts those rows because its IN ('Weekoff','Holiday') filter
+ * runs against a view that resolves them, so a hardcoded status list on our
+ * side can never match them. Resolving the real names keeps the app in step
+ * with whatever HR configures, instead of guessing at spellings.
+ *
+ * Flexi holidays are excluded: they are opt-in leave (taken via the Flexi
+ * leave type), not a company-wide non-working day, matching the is_flexi_leave
+ * = 0 guard the ERP uses when it computes holiday_flag.
+ */
+function bp_att_holiday_name_set(): array
+{
+    static $cache = null;
+    if ($cache !== null) {
+        return $cache;
+    }
+
+    $cache = [];
+
+    $columns = bp_table_columns('holiday_creation');
+    if (empty($columns) || !isset($columns['description'])) {
+        return $cache;
+    }
+
+    $where = '1 = 1';
+    if (isset($columns['is_active'])) {
+        $where .= ' AND is_active = 1';
+    }
+    if (isset($columns['is_delete'])) {
+        $where .= ' AND is_delete = 0';
+    }
+    if (isset($columns['is_flexi_leave'])) {
+        $where .= ' AND is_flexi_leave = 0';
+    }
+
+    foreach (bp_fetch_rows('holiday_creation', ['description'], $where) as $row) {
+        $name = bp_normalize_attendance_status((string)($row['description'] ?? ''));
+        if ($name !== '') {
+            $cache[$name] = true;
+        }
+    }
+
+    return $cache;
+}
+
+/** True when the status is a week off (as opposed to a public holiday). */
+function bp_att_report_is_weekoff_status(string $status): bool
+{
+    $normalized = bp_normalize_attendance_status($status);
+    if ($normalized === '') {
+        return false;
+    }
+
+    return $normalized !== 'holiday'
+        && in_array($normalized, bp_attendance_weekoff_holiday_statuses(), true);
+}
+
+/** True when the status names a public holiday, or is the literal 'Holiday'. */
+function bp_att_report_is_holiday_status(string $status): bool
+{
+    $normalized = bp_normalize_attendance_status($status);
+    if ($normalized === '') {
+        return false;
+    }
+
+    if ($normalized === 'holiday') {
+        return true;
+    }
+
+    return isset(bp_att_holiday_name_set()[$normalized]);
 }
 
 /**
@@ -537,14 +619,21 @@ function bp_att_report_exact_bucket(string $status): ?string
     if (in_array($normalized, bp_att_report_absent_statuses(), true)) {
         return 'absent';
     }
-    if (in_array($normalized, bp_att_report_weekoff_statuses(), true)) {
-        return 'weekoff_holiday';
+    if (bp_att_report_is_weekoff_status($normalized)) {
+        return 'weekoff';
     }
 
-    // Leave = membership in leave_master_creation.leave_type (dynamic).
+    // Leave is checked before holiday so a leave type that happens to share a
+    // holiday's name still counts as leave, exactly as the web orders it.
+    // Holiday is matched last because it is the widest set (any configured
+    // holiday name), and must not shadow a more specific bucket.
     $leaveStatuses = bp_dynamic_leave_statuses();
     if (isset($leaveStatuses[$normalized])) {
         return 'leave';
+    }
+
+    if (bp_att_report_is_holiday_status($normalized)) {
+        return 'holiday';
     }
 
     return null;

@@ -5,6 +5,24 @@ require_once __DIR__ . '/attendance_helpers.php';
 require_once __DIR__ . '/../WorkFromHome/wfh_helpers.php';
 
 /**
+ * Folders the ERP registers an attendance report under. This mobile report
+ * mirrors monthly_attendance_report_new, but the older monthly_attendance_report
+ * and the executive_* variants are the same capability, so a role granted any of
+ * them should see the mobile report. Verified against the live folders/ listing.
+ */
+const BP_ATTENDANCE_REPORT_SCREEN_FOLDERS = [
+    'monthly_attendance_report_new',
+    'monthly_attendance_report',
+    'monthly_attendance',
+    'executive_wise_monthly_attendance',
+    'executive_wise_consolidated_attendance',
+    'executive_lead_wise_monthly_attendance',
+    'day_attendance_report',
+    'attendance_abstract_new',
+    'attendance_abstract',
+];
+
+/**
  * Monthly / date-range attendance report for head & HR users.
  *
  * Mirrors the web "monthly_attendance_report_new" logic, but reuses the mobile
@@ -15,7 +33,8 @@ require_once __DIR__ . '/../WorkFromHome/wfh_helpers.php';
  *
  * Input  : staff_unique_id (or employee_id), from_date, to_date (or month/year)
  * Output : summary counts + per-bucket employee rows
- *          (present / absent / leave / weekoff_holiday)
+ *          (present / absent / leave / wfh / weekoff / holiday, plus
+ *          weekoff_holiday as the union of the last two for older builds)
  */
 
 /**
@@ -85,15 +104,27 @@ try {
     $scope = is_array($context['scope'] ?? null) ? $context['scope'] : [];
     $scopeType = (string)($scope['scope_type'] ?? 'self');
 
-    // Server-side guard: only users with a wider-than-self scope may view the
-    // report. HR/admin ("all"/"hr_admin"), department heads, reporting
-    // officers and plant in-charges all qualify.
-    if ($scopeType === 'self' || $scopeType === '') {
+    // Guard 1 - web-managed permission: the report is only visible to roles
+    // granted an attendance-report screen on the web User Permission screen, so
+    // revoking it there hides it in the app with no redeploy. Checked against
+    // every folder the ERP registers the report under.
+    if (!bp_staff_has_any_screen_permission(
+        is_array($context['staff'] ?? null) ? $context['staff'] : [],
+        BP_ATTENDANCE_REPORT_SCREEN_FOLDERS
+    )) {
         bp_send_json([
             'status' => false,
-            'message' => 'You do not have access to the attendance report',
+            'message' => 'Attendance report access has not been enabled for your role',
         ], 403);
     }
+
+    // Deliberately NO second gate on scope. The web report does not reject a
+    // "self" scope user - build_employee_scope_sql() simply narrows the query
+    // to their own row, so someone granted the report but with no reportees
+    // opens it on the web and sees their own attendance. Rejecting them here
+    // made the app stricter than the web for exactly that group (granted on
+    // the web, blank in the app). The scope engine below already restricts the
+    // rows each viewer gets, so permission is the only gate that belongs here.
 
     [$fromDate, $toDate] = bp_att_normalize_date_range($input);
     if ($fromDate === null || $toDate === null) {
@@ -150,12 +181,16 @@ try {
 
     $rows = bp_fetch_rows('vw_attendance_with_shift', ['*'], $where);
 
+    // Week off and holiday are tracked separately so the app can filter them
+    // independently; 'weekoff_holiday' is still reported as their union for
+    // older app builds that read only that key.
     $buckets = [
         'present' => [],
         'absent' => [],
         'leave' => [],
         'wfh' => [],
-        'weekoff_holiday' => [],
+        'weekoff' => [],
+        'holiday' => [],
     ];
 
     // Pre-resolve project (work_location) ids -> names in one batched query so
@@ -258,8 +293,7 @@ try {
         }
     }
 
-    // Stable ordering: by date then employee, so the lists read naturally.
-    foreach ($buckets as &$list) {
+    $sortByDateThenName = static function (array &$list): void {
         usort($list, static function (array $a, array $b): int {
             $byDate = strcmp((string)$a['shift_date'], (string)$b['shift_date']);
             if ($byDate !== 0) {
@@ -267,20 +301,32 @@ try {
             }
             return strcmp((string)$a['staff_name'], (string)$b['staff_name']);
         });
+    };
+
+    // Stable ordering: by date then employee, so the lists read naturally.
+    foreach ($buckets as &$list) {
+        $sortByDateThenName($list);
     }
     unset($list);
+
+    // Sorted again after merging, otherwise the combined legacy list would run
+    // every week off before every holiday instead of being date-ordered.
+    $weekoffHoliday = array_merge($buckets['weekoff'], $buckets['holiday']);
+    $sortByDateThenName($weekoffHoliday);
 
     $summary = [
         'present' => count($buckets['present']),
         'absent' => count($buckets['absent']),
         'leave' => count($buckets['leave']),
         'wfh' => count($buckets['wfh']),
-        'weekoff_holiday' => count($buckets['weekoff_holiday']),
+        'weekoff' => count($buckets['weekoff']),
+        'holiday' => count($buckets['holiday']),
+        'weekoff_holiday' => count($weekoffHoliday),
         'total' => count($buckets['present'])
             + count($buckets['absent'])
             + count($buckets['leave'])
             + count($buckets['wfh'])
-            + count($buckets['weekoff_holiday']),
+            + count($weekoffHoliday),
     ];
 
     bp_send_json([
@@ -301,7 +347,9 @@ try {
             'absent' => $buckets['absent'],
             'leave' => $buckets['leave'],
             'wfh' => $buckets['wfh'],
-            'weekoff_holiday' => $buckets['weekoff_holiday'],
+            'weekoff' => $buckets['weekoff'],
+            'holiday' => $buckets['holiday'],
+            'weekoff_holiday' => $weekoffHoliday,
             'server_time' => bp_now(),
         ],
     ]);

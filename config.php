@@ -44,6 +44,51 @@ define(
     rtrim((string)(getenv('BP_FACE_RECOGNITION_BASE_URL') ?: BP_QR_API_BASE_URL), '/')
 );
 
+/**
+ * Short Leave has been approved and is enabled for all applicable users.
+ *
+ * On by default. Can still be switched off per environment without a
+ * redeploy with
+ *   BP_ENABLE_SHORT_LEAVE=0
+ * (or "false"/"no"/"off") - e.g. to disable it on beta while it is still
+ * being verified there, while leaving live on.
+ *
+ * The Flutter app has its own matching flag; if the two disagree, whichever
+ * is OFF wins for that half of the flow (the dropdown entry / the actual
+ * submission), so keep both in the same state.
+ */
+define(
+    'BP_ENABLE_SHORT_LEAVE',
+    !in_array(
+        strtolower(trim((string)getenv('BP_ENABLE_SHORT_LEAVE'))),
+        ['0', 'false', 'no', 'off'],
+        true
+    )
+);
+
+/**
+ * Attendance Regularization, ported from the web ERP modules att_regular
+ * (employee) and reg_appr (approval).
+ *
+ * On by default. Can be switched off per environment without a redeploy with
+ *   BP_ENABLE_ATT_REGULARIZATION=0
+ * (or "false"/"no"/"off") - e.g. to hold it on beta while it is verified.
+ *
+ * Turning this off makes the dashboard report can_use_regularization /
+ * can_approve_regularization as false, so the app hides both tiles, and makes
+ * the apply/update/delete endpoints 403. Per-role access on top of this flag
+ * stays where the web manages it: user_screen_permission for the att_regular
+ * and reg_appr screens.
+ */
+define(
+    'BP_ENABLE_ATT_REGULARIZATION',
+    !in_array(
+        strtolower(trim((string)getenv('BP_ENABLE_ATT_REGULARIZATION'))),
+        ['0', 'false', 'no', 'off'],
+        true
+    )
+);
+
 define('LEGACY_CRUD_URL', BP_LEGACY_WEB_BASE_URL . '/folders/login/crud.php');
 define('CONNECT_TIMEOUT_SECONDS', 10);
 define('REQUEST_TIMEOUT_SECONDS', 20);
