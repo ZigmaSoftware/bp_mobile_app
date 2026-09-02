@@ -85,14 +85,38 @@ if ($httpCode === 200 && $legacyStatus === 1 && ($legacyMsg === 'success_login' 
     $session = is_array($legacy['session'] ?? null) ? $legacy['session'] : [];
     $token = bin2hex(random_bytes(24)); // temporary app token
 
+    $sessionUserName = trim((string)($session['user_name'] ?? '')) !== ''
+        ? trim((string)$session['user_name'])
+        : $username;
+    $staffId = trim((string)($session['staff_id'] ?? ''));
+
+    // Off Role accounts carry no staff linkage (user.staff_unique_id = '').
+    // The legacy session still fills staff_name / designation_type, because the
+    // web-side lookups treat an empty staff id as "no filter" and hand back the
+    // first active staff row instead of nothing. Trusting those values shows
+    // every off-role user another employee's name and designation, so resolve
+    // the identity from the account itself whenever the staff id is blank.
+    $isOffRole = ($staffId === '');
+
+    $staffName = trim((string)($session['staff_name'] ?? ''));
+    $designation = trim((string)($session['designation_type'] ?? ''));
+
+    if ($isOffRole) {
+        $staffName = $sessionUserName;
+        $designation = 'Off Role';
+    } elseif ($staffName === '') {
+        $staffName = $sessionUserName;
+    }
+
     out(200, [
         'status' => 'success',
         'message' => 'Login successful',
         'token' => $token,
-        'user_name' => $session['user_name'] ?? $username,
-        'staff_name' => $session['staff_name'] ?? $username,
-        'empid' => $session['staff_id'] ?? ($session['user_id'] ?? ''),
-        'department_name' => $session['designation_type'] ?? '',
+        'user_name' => $sessionUserName,
+        'staff_name' => $staffName,
+        'empid' => $staffId,
+        'department_name' => $designation,
+        'is_off_role' => $isOffRole,
         'show_icon' => false,
     ]);
 }

@@ -1567,6 +1567,132 @@ function bp_att_insert_direct_approval(array $context, array $input, float $lati
     ];
 }
 
+/**
+ * The punch already stored for this employee today, if one falls inside the
+ * de-duplication window (BP_ATT_PUNCH_DEDUPE_SECONDS).
+ *
+ * Neither zigfly_recognized nor att_approval carries a punch direction; in/out
+ * is inferred from row order within the day (see the pairing in
+ * bp_att_recognized_attendance_items()). So a punch that gets written twice -
+ * a double tap, or a client retry after a timeout - consumes the day's out
+ * slot with a copy of the in punch, and the employee can no longer punch out.
+ *
+ * Returning the existing row lets the caller answer a repeat submission with
+ * the punch that was already recorded instead of inserting another one.
+ * Both punch tables are checked, because a punch outside the geofence lands in
+ * att_approval rather than zigfly_recognized.
+ */
+function bp_att_recent_duplicate_punch(
+    string $employeeId,
+    string $recognitionDate,
+    string $records
+): ?array {
+    $windowSeconds = defined('BP_ATT_PUNCH_DEDUPE_SECONDS')
+        ? (int)BP_ATT_PUNCH_DEDUPE_SECONDS
+        : 120;
+    if ($windowSeconds <= 0) {
+        return null;
+    }
+
+    $employeeId = trim($employeeId);
+    $recognitionDate = trim($recognitionDate);
+    if ($employeeId === '' || $recognitionDate === '') {
+        return null;
+    }
+
+    $referenceTs = strtotime($records);
+    if ($referenceTs === false) {
+        return null;
+    }
+
+    $best = null;
+    $bestTs = null;
+
+    foreach (['zigfly_recognized', 'att_approval'] as $table) {
+        $tableColumns = bp_att_table_columns($table);
+        if (empty($tableColumns)) {
+            continue;
+        }
+
+        $columns = ['emp_id', 'records', 'recognition_date', 'recognition_time'];
+        foreach (['id', 'latitude', 'longitude', 'captured_image_path', 'status'] as $optional) {
+            if (isset($tableColumns[$optional])) {
+                $columns[] = $optional;
+            }
+        }
+
+        $where = 'UPPER(TRIM(emp_id)) = ' . bp_sql_quote(strtoupper($employeeId))
+            . ' AND recognition_date = ' . bp_sql_quote($recognitionDate);
+        if (isset($tableColumns['is_delete'])) {
+            $where .= ' AND is_delete = 0';
+        }
+
+        foreach (bp_fetch_rows($table, $columns, $where) as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            $rowRecords = trim((string)($row['records'] ?? ''));
+            if ($rowRecords === '') {
+                $rowRecords = $recognitionDate . ' ' . trim((string)($row['recognition_time'] ?? ''));
+            }
+
+            $rowTs = strtotime($rowRecords);
+            if ($rowTs === false || abs($referenceTs - $rowTs) > $windowSeconds) {
+                continue;
+            }
+
+            if ($bestTs === null || $rowTs > $bestTs) {
+                $bestTs = $rowTs;
+                $best = $row;
+                $best['source_table'] = $table;
+                $best['records'] = $rowRecords;
+            }
+        }
+    }
+
+    return $best;
+}
+
+/**
+ * Undo a same-second duplicate that already reached the punch table.
+ *
+ * vw_attendance_with_shift pairs the day's punches positionally, so two rows
+ * written for one punch surface as "in 20:26:12, out 20:26:12, worked
+ * 00:00:00". That reads as a completed day and hides the fact that no punch-out
+ * was ever made. Blanking the exit again makes the day honestly show a missing
+ * punch-out, which is what HR needs to see.
+ *
+ * bp_att_recent_duplicate_punch() stops new duplicates; this repairs the rows
+ * already in the table.
+ */
+function bp_att_clear_same_second_exit(array $item): array
+{
+    $entry = trim((string)($item['entry_punch'] ?? ''));
+    $exit = trim((string)($item['exit_punch'] ?? ''));
+
+    if ($entry === '' || $exit === '') {
+        return $item;
+    }
+
+    $entryTs = strtotime($entry);
+    $exitTs = strtotime($exit);
+    if ($entryTs === false || $exitTs === false || $entryTs !== $exitTs) {
+        return $item;
+    }
+
+    $item['exit_punch'] = '';
+    $item['out_time'] = '';
+    $item['out_latitude'] = '';
+    $item['out_longitude'] = '';
+    $item['out_image_path'] = '';
+    $item['out_site_name'] = '';
+    $item['total_worked_time'] = '';
+    $item['duplicate_punch_collapsed'] = true;
+
+    return $item;
+}
+
 function bp_att_sql_date_filter(string $column, ?string $fromDate, ?string $toDate): string
 {
     $parts = [];
@@ -2929,10 +3055,42 @@ function bp_att_fetch_actual_attendance_records(
                 $recognized
             );
         }
+
+        $items[$shiftDate] = bp_att_clear_same_second_exit($items[$shiftDate]);
+    }
+
+    // Punch rows are the authoritative record of a day: they hold every punch,
+    // paired into in/out. An approval row holds only the single punch that
+    // needed approving, so it must annotate a day - never replace its punch
+    // times. This loop therefore runs BEFORE the approval loop.
+    //
+    // With the old order, a day whose punches were not in
+    // vw_attendance_with_shift was built from the approval alone, so its
+    // entry_punch became the approved punch and every other punch of the day was
+    // dropped. A punch-out approved from outside the geofence then displayed as
+    // that day's punch-IN, with the real punch-in gone - e.g. BPIN0093 on
+    // 2026-09-01 held punches at 11:06:37 (HO) and 15:31:45 (approved, off-site)
+    // and the API returned "in 15:31:45, out --".
+    foreach ($recognizedByDate as $shiftDate => $recognized) {
+        if (isset($items[$shiftDate])) {
+            continue;
+        }
+
+        $items[$shiftDate] = bp_att_recognized_row_to_attendance_item(
+            $shiftDate,
+            $employeeId,
+            $recognized
+        );
     }
 
     foreach ($approvalByDate as $shiftDate => $approval) {
         if (isset($items[$shiftDate])) {
+            // The day already has its punch times, from the view or from the
+            // punch table. Carry across the approval's own fields only.
+            $items[$shiftDate] = bp_att_apply_approval_metadata(
+                $items[$shiftDate],
+                $approval
+            );
             continue;
         }
 
@@ -2968,20 +3126,28 @@ function bp_att_fetch_actual_attendance_records(
         ];
     }
 
-    foreach ($recognizedByDate as $shiftDate => $recognized) {
-        if (isset($items[$shiftDate])) {
-            continue;
-        }
-
-        $items[$shiftDate] = bp_att_recognized_row_to_attendance_item(
-            $shiftDate,
-            $employeeId,
-            $recognized
-        );
-    }
-
     ksort($items);
     return array_values($items);
+}
+
+/**
+ * Copy an approval's own fields onto a day that already has its punch times.
+ *
+ * Used when a day has real punch rows: the approval says something about one
+ * punch of that day, so it may add approval state but must not touch
+ * entry/exit/in/out, which come from the punch table.
+ */
+function bp_att_apply_approval_metadata(array $item, array $approval): array
+{
+    $item['approval_id'] = trim((string)($approval['approval_id'] ?? ''));
+    $item['approval_status'] = trim((string)($approval['status_label'] ?? ''));
+    $item['approval_status_code'] = isset($approval['status'])
+        ? (string)$approval['status']
+        : '';
+    $item['approval_time'] = trim((string)($approval['recognition_time'] ?? ''));
+    $item['approval_records'] = trim((string)($approval['records'] ?? ''));
+
+    return $item;
 }
 
 function bp_att_fetch_recognized_records_by_date(
@@ -3268,7 +3434,7 @@ function bp_att_merge_recognized_attendance_item(array $item, array $recognized)
         || trim((string)($recognized['entry_punch'] ?? '')) !== ''
         || trim((string)($recognized['exit_punch'] ?? '')) !== '';
 
-    foreach ([
+    $recognizedPunchFields = [
         'entry_punch',
         'exit_punch',
         'in_time',
@@ -3280,6 +3446,21 @@ function bp_att_merge_recognized_attendance_item(array $item, array $recognized)
         'out_latitude',
         'out_longitude',
         'out_image_path',
+    ];
+
+    foreach ($recognizedPunchFields as $field) {
+        $recognizedValue = trim((string)($recognized[$field] ?? ''));
+        if ($hasRecognizedPunch && $recognizedValue !== '') {
+            $item[$field] = (string)($recognized[$field] ?? '');
+            continue;
+        }
+
+        if (trim((string)($item[$field] ?? '')) === '') {
+            $item[$field] = (string)($recognized[$field] ?? '');
+        }
+    }
+
+    foreach ([
         'in_site_name',
         'out_site_name',
     ] as $field) {

@@ -80,7 +80,34 @@ try {
 
     $context = bp_att_require_context($staffIdInput);
     $employeeId = trim((string)($context['employee_id'] ?? ''));
-    [$recognitionDate] = bp_att_direct_punch_timestamp($input);
+    [$recognitionDate, $recognitionTime, $records] = bp_att_direct_punch_timestamp($input);
+
+    // A repeat submission - a double tap on the punch tile, or a client retry
+    // after a timeout - must not create a second row. The punch tables carry no
+    // direction, so a duplicate consumes the day's out slot and the employee can
+    // no longer punch out. Answer with the punch that is already recorded.
+    $existingPunch = bp_att_recent_duplicate_punch($employeeId, $recognitionDate, $records);
+    if ($existingPunch !== null) {
+        $existingIsApproval = ($existingPunch['source_table'] ?? '') === 'att_approval';
+        bp_send_json([
+            'status' => true,
+            'message' => $existingIsApproval
+                ? 'Attendance was already sent for approval a moment ago'
+                : 'Attendance was already marked a moment ago',
+            'approval_pending' => $existingIsApproval,
+            'data' => [
+                'direct_punch' => true,
+                'approval_pending' => $existingIsApproval,
+                'duplicate_suppressed' => true,
+                'employee_id' => $employeeId,
+                'records' => (string)($existingPunch['records'] ?? $records),
+                'recognition_date' => (string)($existingPunch['recognition_date'] ?? $recognitionDate),
+                'recognition_time' => (string)($existingPunch['recognition_time'] ?? $recognitionTime),
+                'latitude' => (string)($existingPunch['latitude'] ?? ''),
+                'longitude' => (string)($existingPunch['longitude'] ?? ''),
+            ],
+        ]);
+    }
 
     $isWfhDay = false;
     if ($employeeId !== '' && $recognitionDate !== '' && !empty(bp_table_columns(BP_WFH_TABLE))) {

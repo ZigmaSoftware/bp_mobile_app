@@ -89,6 +89,23 @@ define(
     )
 );
 
+/**
+ * Punch de-duplication window, in seconds.
+ *
+ * The punch tables (zigfly_recognized / att_approval) store no punch
+ * direction - in/out is inferred from row order within the day - so one punch
+ * written twice silently fills the day's out slot and the employee can no
+ * longer punch out. The web path has guarded this with a 120s window since
+ * day one (folders/manual_attendance/crud.php); the mobile endpoints had no
+ * guard, which is what produced the duplicate rows seen in live data.
+ *
+ * Set BP_ATT_PUNCH_DEDUPE_SECONDS=0 to disable the guard entirely.
+ */
+define(
+    'BP_ATT_PUNCH_DEDUPE_SECONDS',
+    max(0, (int)(getenv('BP_ATT_PUNCH_DEDUPE_SECONDS') ?: 120))
+);
+
 define('LEGACY_CRUD_URL', BP_LEGACY_WEB_BASE_URL . '/folders/login/crud.php');
 define('CONNECT_TIMEOUT_SECONDS', 10);
 define('REQUEST_TIMEOUT_SECONDS', 20);
