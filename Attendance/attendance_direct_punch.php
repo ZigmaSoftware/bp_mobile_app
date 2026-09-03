@@ -148,11 +148,35 @@ try {
     $nearest = $hasValidCoordinate
         ? bp_att_nearest_project_location($projectLocations, (float)$latitude, (float)$longitude)
         : null;
-    $withinGeofence = $isWfhDay || ($nearest !== null
+
+    // Geofence bypass is scoped to specific test employee IDs - see
+    // BP_ATT_GEOFENCE_BYPASS_EMPLOYEE_IDS in config.php. Every employee not on
+    // that list is geofenced exactly as before; this can never affect another
+    // employee's punch.
+    $geofenceBypassed = function_exists('bp_att_geofence_bypass_allowed')
+        && bp_att_geofence_bypass_allowed($employeeId);
+
+    $insideRadius = $nearest !== null
         && isset($nearest['distance_meters'])
-        && (float)$nearest['distance_meters'] <= $radiusMeters);
+        && (float)$nearest['distance_meters'] <= $radiusMeters;
+    $withinGeofence = $geofenceBypassed || $isWfhDay || $insideRadius;
+
     $geofence = bp_att_direct_geofence_payload($nearest, $radiusMeters, $withinGeofence);
     $geofence['wfh_bypass'] = $isWfhDay;
+    $geofence['enforced'] = !$geofenceBypassed;
+
+    if ($geofenceBypassed && !$isWfhDay && !$insideRadius) {
+        // Leave a trail so test punches can be identified afterwards.
+        $geofence['bypass_reason'] = 'geofence_bypass_employee_id';
+        error_log(sprintf(
+            'bp_mobile_app attendance_direct_punch: geofence bypass employee ID '
+            . '- accepted off-site punch for %s at %s,%s (%s)',
+            $employeeId !== '' ? $employeeId : 'unknown',
+            (string)$latitude,
+            (string)$longitude,
+            $records
+        ));
+    }
 
     if ($withinGeofence) {
         $insertResult = bp_att_insert_direct_recognized($context, $input, (float)$latitude, (float)$longitude);

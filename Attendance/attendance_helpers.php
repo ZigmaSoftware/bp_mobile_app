@@ -2267,6 +2267,17 @@ function bp_att_blueplanet_pdo(): ?PDO
         $database = 'blueplanet';
     }
 
+    // This secondary database is optional - it only supplements punch rows with
+    // the centralized `recognized` table. Set BP_ATTENDANCE_DB_ENABLED=0 to skip
+    // it entirely when the host is not reachable from this server.
+    if (in_array(
+        strtolower(trim((string)getenv('BP_ATTENDANCE_DB_ENABLED'))),
+        ['0', 'false', 'no', 'off'],
+        true
+    )) {
+        return $connection;
+    }
+
     try {
         $connection = new PDO(
             $driver . ':host=' . $host . ';port=3306;dbname=' . $database . ';charset=utf8',
@@ -2275,6 +2286,14 @@ function bp_att_blueplanet_pdo(): ?PDO
             [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                // Without an explicit connect timeout PDO blocks on the TCP
+                // connect until the OS gives up - about 30 seconds - and it did
+                // so on EVERY request, because the default host above is a
+                // private LAN address that a public web server cannot reach.
+                // That fixed 30s was the whole cost of attendance_records.php.
+                PDO::ATTR_TIMEOUT => defined('BP_ATTENDANCE_DB_CONNECT_TIMEOUT')
+                    ? BP_ATTENDANCE_DB_CONNECT_TIMEOUT
+                    : 2,
             ]
         );
     } catch (Throwable $e) {
@@ -3745,7 +3764,7 @@ function bp_att_hr_recipient_ids(): array
 
     $rows = bp_att_query_rows(
         $pdo->query(
-            "SELECT employee_id, designation_unique_id, department
+            "SELECT employee_id, designation_unique_id, department, staff_name
              FROM staff_test
              WHERE is_delete = 0
                AND is_active = 1"
@@ -3824,6 +3843,9 @@ function bp_att_hr_recipient_ids(): array
         if (isset($userTableColumns['user_type'])) {
             $userSelectColumns[] = 'user_type';
         }
+        if (isset($userTableColumns['user_name'])) {
+            $userSelectColumns[] = 'user_name';
+        }
 
         $latestUserRows = bp_att_query_rows(
             $pdo->query(
@@ -3848,6 +3870,7 @@ function bp_att_hr_recipient_ids(): array
                 'name' => $userTypeId !== ''
                     ? ($userTypeMap[$userTypeId] ?? $userTypeId)
                     : '',
+                'user_name' => bp_att_safe_text($userRow['user_name'] ?? ''),
             ];
         }
     }
@@ -3860,25 +3883,29 @@ function bp_att_hr_recipient_ids(): array
         }
 
         $designationId = bp_att_safe_text($row['designation_unique_id'] ?? '');
-        $departmentId = bp_att_safe_text($row['department'] ?? '');
-        $userTypeMeta = $userTypeByEmployee[strtoupper($employeeId)] ?? ['id' => '', 'name' => ''];
+        $userTypeMeta = $userTypeByEmployee[strtoupper($employeeId)]
+            ?? ['id' => '', 'name' => '', 'user_name' => ''];
         $designationName = $designationMap[$designationId] ?? $designationId;
-        $roleTokens = [
+
+        // Authoritative check: the same one bp_att_context() uses for
+        // is_hr_user, which is what the dashboard reports as approval_access and
+        // what bp_att_require_hr_context() enforces on the approval endpoints.
+        //
+        // This used to match on role TEXT (bp_att_role_indicates_hr on the
+        // designation / department / user-type names), which notified anyone
+        // whose role merely contained "HR" - e.g. an "Executive - HR" in the
+        // "HR" department who has no approval permission and gets a 403 from
+        // attendance_approvals.php. Recipients must be exactly the users who can
+        // actually action the approval, so the two now share one check.
+        $isApprover = bp_att_is_full_access_user(
+            (string)($userTypeMeta['id'] ?? ''),
             $designationName,
-            $departmentMap[$departmentId] ?? $departmentId,
-            $userTypeMeta['name'] ?? '',
-        ];
+            (string)($userTypeMeta['user_name'] ?? ''),
+            bp_att_safe_text($row['staff_name'] ?? ''),
+            $employeeId
+        );
 
-        $isHr = bp_att_role_indicates_hr($roleTokens);
-        if (!$isHr && function_exists('attendance_is_hr_admin')) {
-            $isHr = (bool)attendance_is_hr_admin(
-                (string)($userTypeMeta['id'] ?? ''),
-                $designationName,
-                $employeeId
-            );
-        }
-
-        if ($isHr) {
+        if ($isApprover) {
             $recipientIds[] = $employeeId;
         }
     }

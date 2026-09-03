@@ -3,3 +3,9 @@ Tutorial/*.mp4
 *.json
 .DS_Store
 __MACOSX/
+
+# Per-server environment overrides. Real values live only on the server;
+# .env.example is the committed template. Never commit .env - it carries
+# environment-specific operational settings (and would overwrite the
+# server's own file if deployed).
+.env

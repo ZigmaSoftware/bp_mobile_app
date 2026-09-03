@@ -1,6 +1,65 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * Optional .env beside this file, so the BP_* flags below can be switched per
+ * environment without editing code. One KEY=VALUE per line; # starts a
+ * comment; surrounding quotes are stripped.
+ *
+ * A variable already set in the real environment always wins, so a
+ * server-level setting is never overridden by the file. Must run before the
+ * getenv() calls below.
+ *
+ * The .env file is denied to the web by the .htaccess in this directory.
+ * Keep it that way - do not move the file somewhere servable.
+ */
+function bp_load_env_file(string $path): void
+{
+    if (!is_file($path) || !is_readable($path)) {
+        return;
+    }
+
+    $lines = @file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    if ($lines === false) {
+        return;
+    }
+
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line === '' || strpos($line, '#') === 0) {
+            continue;
+        }
+
+        $parts = explode('=', $line, 2);
+        if (count($parts) !== 2) {
+            continue;
+        }
+
+        $key = trim($parts[0]);
+        if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $key)) {
+            continue;
+        }
+
+        // A real environment variable always wins over the file.
+        if (getenv($key) !== false) {
+            continue;
+        }
+
+        $value = trim($parts[1]);
+        $length = strlen($value);
+        if ($length >= 2
+            && (($value[0] === '"' && $value[$length - 1] === '"')
+                || ($value[0] === "'" && $value[$length - 1] === "'"))
+        ) {
+            $value = substr($value, 1, -1);
+        }
+
+        putenv($key . '=' . $value);
+    }
+}
+
+bp_load_env_file(__DIR__ . '/.env');
+
 function bp_first_existing_dir(array $candidates, string $fallback): string
 {
     foreach ($candidates as $candidate) {
@@ -87,6 +146,76 @@ define(
         ['0', 'false', 'no', 'off'],
         true
     )
+);
+
+/**
+ * Geofence bypass for the mobile punch endpoints - scoped to specific test
+ * employee IDs, never a blanket switch.
+ *
+ * This runs against bp_mobile_app, the real production backend - there is no
+ * separate sandbox database - so a global "enforcement off" flag would waive
+ * the geofence for every live user, not just the tester. Instead, list the
+ * exact employee IDs allowed to bypass it:
+ *
+ *   BP_ATT_GEOFENCE_BYPASS_EMPLOYEE_IDS=TEST001,BPIN0093
+ *
+ * Comma-separated, case-insensitive, whitespace ignored. Empty/unset (the
+ * default) bypasses nothing - every employee is geofenced as normal. Every
+ * OTHER employee ID keeps full geofence enforcement regardless of this
+ * setting, so this is safe to set directly on bp_mobile_app's own .env.
+ *
+ * TESTING ONLY, and only for the listed IDs: while an ID is listed, a punch
+ * from ANY location for that employee is accepted, and an off-site punch is
+ * written straight to zigfly_recognized as a normal attendance punch instead
+ * of going to att_approval for approval. Remove the ID when done testing -
+ * this is not something to leave populated.
+ *
+ * Every bypassed punch is marked in the API response (geofence.enforced =
+ * false, geofence.bypass_reason) and written to the PHP error log, so test
+ * punches can be told apart from real ones afterwards.
+ */
+function bp_att_geofence_bypass_employee_ids(): array
+{
+    static $ids = null;
+    if ($ids !== null) {
+        return $ids;
+    }
+
+    $raw = (string)getenv('BP_ATT_GEOFENCE_BYPASS_EMPLOYEE_IDS');
+    $ids = array_values(array_filter(array_map(
+        static fn ($id) => strtoupper(trim($id)),
+        explode(',', $raw)
+    ), static fn ($id) => $id !== ''));
+
+    return $ids;
+}
+
+function bp_att_geofence_bypass_allowed(string $employeeId): bool
+{
+    $employeeId = strtoupper(trim($employeeId));
+    if ($employeeId === '') {
+        return false;
+    }
+
+    return in_array($employeeId, bp_att_geofence_bypass_employee_ids(), true);
+}
+
+/**
+ * Connect timeout, in seconds, for the optional secondary attendance database
+ * (the centralized `blueplanet` DB read by bp_att_blueplanet_pdo()).
+ *
+ * That connection had no timeout at all, and its default host is a private LAN
+ * address (192.168.1.200) which a public web server cannot reach - so PDO
+ * blocked on the TCP connect until the OS gave up, roughly 30 seconds, on every
+ * single request. attendance_records.php took ~30.6s for both a one-day and a
+ * whole-month query, because the cost was this connect, not the query.
+ *
+ * Keep this small. Set BP_ATTENDANCE_DB_ENABLED=0 to skip the connection
+ * entirely where the host is unreachable.
+ */
+define(
+    'BP_ATTENDANCE_DB_CONNECT_TIMEOUT',
+    max(1, (int)(getenv('BP_ATTENDANCE_DB_CONNECT_TIMEOUT') ?: 2))
 );
 
 /**

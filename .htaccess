@@ -1,0 +1,14 @@
+# Deny web access to environment files.
+#
+# .env is read server-side by config.php (bp_load_env_file). It must never be
+# downloadable - without this rule it would be fetchable at
+# https://<host>/bp_mobile_app/.env
+<FilesMatch "^\.env">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
